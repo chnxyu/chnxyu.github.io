@@ -7,18 +7,18 @@
   
   <title>Spark 学习（1） | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向大">
+  <meta name="description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。 目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向">
 <meta name="keywords" content="tag1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark 学习（1）">
 <meta property="og:url" content="http://yoursite.com/2018/07/03/Spark-使用指南/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向大">
+<meta property="og:description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。 目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-03T12:32:43.265Z">
+<meta property="og:updated_time" content="2018-07-06T01:32:01.649Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark 学习（1）">
-<meta name="twitter:description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向大">
+<meta name="twitter:description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。 目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向">
   
     <link rel="alternate" href="/atom.xml" title="Xinyuan&#39;s blog" type="application/atom+xml">
   
@@ -95,13 +95,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。<br>目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向大数据处理的Spark；（3）面向AI的TensorFlow；</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。</p>
+<p>目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向大数据处理的Spark；（3）面向AI的TensorFlow；</p>
 <h1 id="本节概述"><a href="#本节概述" class="headerlink" title="本节概述"></a>本节概述</h1><p>Spark来源于伯克利大学的实验室。主要创新点是内存计算和DAG。<br>这篇文章的主要目的是介绍如何独立的编写Spark应用程序。Spark的优点是我在单机上跑成功的应用程序，在集群上也能成功，这是MPI不具备的，这个特点大大提高了编程效率。所以，编写Spark应用程序的步骤就可以分解为：（1）在单机上编写测试一个Spark应用程序；（2）然后在拿到集群上去运行。</p>
 <h1 id="1-在单机上编写Spark独立应用程序"><a href="#1-在单机上编写Spark独立应用程序" class="headerlink" title="1. 在单机上编写Spark独立应用程序"></a>1. 在单机上编写Spark独立应用程序</h1><h2 id="1-1-编写Spark独立应用程序"><a href="#1-1-编写Spark独立应用程序" class="headerlink" title="1.1 编写Spark独立应用程序"></a>1.1 编写Spark独立应用程序</h2><h2 id="1-2-使用开发工具编写Spark应用程序"><a href="#1-2-使用开发工具编写Spark应用程序" class="headerlink" title="1.2 使用开发工具编写Spark应用程序"></a>1.2 使用开发工具编写Spark应用程序</h2><h1 id="2-集群"><a href="#2-集群" class="headerlink" title="2. 集群"></a>2. 集群</h1><h2 id="Spark集群环境搭建"><a href="#Spark集群环境搭建" class="headerlink" title="Spark集群环境搭建"></a>Spark集群环境搭建</h2><h2 id="在集群上运行Spark应用程序"><a href="#在集群上运行Spark应用程序" class="headerlink" title="在集群上运行Spark应用程序"></a>在集群上运行Spark应用程序</h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/03/Spark-使用指南/" data-id="cjj5od24500025sw6mnl727zx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/03/Spark-使用指南/" data-id="cjj9i1npd0004ocw6tbgrtx8m" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tag1/">tag1</a></li></ul>
@@ -111,6 +112,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/07/06/Execution-of-Spark-at-cluster/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Execution of Spark at cluster
+        
+      </div>
+    </a>
   
   
     <a href="/2018/07/02/Hello0703/" id="article-nav-older" class="article-nav-link-wrap">
@@ -171,6 +181,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/07/06/Execution-of-Spark-at-cluster/">Execution of Spark at cluster</a>
+          </li>
         
           <li>
             <a href="/2018/07/03/Spark-使用指南/">Spark 学习（1）</a>
