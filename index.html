@@ -101,7 +101,7 @@
 <p>这个并行处理的逻辑并不复杂，并行计算本身在算法的难处也没有体现，但是就这么一个简单的处理过程，要实现起来也不轻松。Spark是在MapReudce编程模型的原理下，加入了“内存计算”和“DAG”才拥有较高运算效率的。当然，“内存计算”和“DAG”并不是Spark运行流程的全部。这篇文章，就是要对Spark整个运行流程进行一个介绍。</p>
 <h1 id="基本概念与架构"><a href="#基本概念与架构" class="headerlink" title="基本概念与架构"></a>基本概念与架构</h1><p>硬件资源的发展。由于内存资源的扩大，可以进行内存计算。所以，这里提出了RDD的概念。<br>在RDD的基础上，建立directed acyclicity graph/DGA,进一步提高执行效率。不需要Map和Reduce之间的等待。<br>在RDD和DGA的基础上，以进程+线程的方式提高响应速度。Task是最小执行单位。stage是可并行执行的task的集合。stage的集合是job。</p>
 <p>硬件资源是通过cluster manager（cm）与deriver program交互的。dp在各个work node上若干启动进程，进程再启动线程，线程去运行任务。</p>
-<p><img src="/images/Architecture of Spark.png" alt="Architecture of Spark.png"></p>
+<p><img src="/images/5b3ef83327043.png" alt="Architecture of Spark.png"></p>
 <p>注意：<br>（1）线程的响应速度快；<br>（2）executor中有blockmanager，就是有限进行基于内存的计算，溢出是在硬盘执行。<br>（3）job1与job2之间没有联系。<br><img src="https://i.loli.net/2018/07/06/5b3ef832bd73b.png" alt="app_driver_job_stage_task.png"></p>
 <h1 id="基本运行流程（Execution-of-Spark-at-cluster）"><a href="#基本运行流程（Execution-of-Spark-at-cluster）" class="headerlink" title="基本运行流程（Execution of Spark at cluster）"></a>基本运行流程（Execution of Spark at cluster）</h1><h2 id="deriver-program（dp）"><a href="#deriver-program（dp）" class="headerlink" title="deriver program（dp）"></a>deriver program（dp）</h2><p>dp用来构建Application（app）与集群的连接，通过spark context（sc）这个对象。</p>
 <p>假设app在node1上提交，就要在node1上创建一个driver programm，dp相当于管家程序。由driver programm去创建一个sc，这个sc相当于一个桥梁，将dp与硬件资源（cluster resource/cr）联系起来。sc本身是一个对象，里面又一些方法，编程时需要“new”一个sc。通过sc中的各种方法，我们可以去访问资源。</p>
@@ -121,7 +121,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjj9jdftj0000kgw6choykqh9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjj9jei7k00002ww6l2spwhlv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -164,7 +164,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/03/Spark-使用指南/" data-id="cjj9jdfto0001kgw6agtnlhzq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/03/Spark-使用指南/" data-id="cjj9jei7x00042ww6t6lfq9ji" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tag1/">tag1</a></li></ul>
@@ -206,7 +206,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjj9jdftu0003kgw6lcdnvc32" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjj9jei7r00022ww6h6wyuki1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tag1/">tag1</a></li></ul>
