@@ -8,7 +8,7 @@
   <title>Execution of Spark at cluster | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前言一项工程技术的背后一定有一个科学原理。并行计算的科学原理并不复杂，就是一些工作可以同步的处理。但是对这些工作的真正实践还是有太多的问题要处理，没有这么简单。 Spark处理并行问题的逻辑也非常简单，将一个大的数据集拆分成若干小的数据集，将各个小的数据集，然后对这些小的数据集用相同的程序来处理，得到结果之后再重新聚集到一起。 这个并行处理的逻辑并不复杂，并行计算本身在算法的难处也没有体现，但是就">
-<meta name="keywords" content="Transportation Research">
+<meta name="keywords" content="spark">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Execution of Spark at cluster">
 <meta property="og:url" content="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/index.html">
@@ -18,13 +18,11 @@
 <meta property="og:image" content="http://yoursite.com/img/5b3ef83327043.png">
 <meta property="og:image" content="https://i.loli.net/2018/07/06/5b3ef832bd73b.png">
 <meta property="og:image" content="https://i.loli.net/2018/07/06/5b3ef8347c26c.png">
-<meta property="og:updated_time" content="2018-07-06T05:27:18.521Z">
+<meta property="og:updated_time" content="2018-07-07T03:56:34.818Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Execution of Spark at cluster">
 <meta name="twitter:description" content="前言一项工程技术的背后一定有一个科学原理。并行计算的科学原理并不复杂，就是一些工作可以同步的处理。但是对这些工作的真正实践还是有太多的问题要处理，没有这么简单。 Spark处理并行问题的逻辑也非常简单，将一个大的数据集拆分成若干小的数据集，将各个小的数据集，然后对这些小的数据集用相同的程序来处理，得到结果之后再重新聚集到一起。 这个并行处理的逻辑并不复杂，并行计算本身在算法的难处也没有体现，但是就">
 <meta name="twitter:image" content="http://yoursite.com/img/5b3ef83327043.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Xinyuan&#39;s blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -59,10 +57,14 @@
         
           <a class="main-nav-link" href="/archives">Archives</a>
         
+          <a class="main-nav-link" href="/categories">categories</a>
+        
+          <a class="main-nav-link" href="/tags">tags</a>
+        
+          <a class="main-nav-link" href="/about">about</a>
+        
       </nav>
       <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
@@ -124,9 +126,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjjauc8mx0000pgw6mq01lcu0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjjb15r4i0000row6cdlcofwm" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
     </footer>
   </div>
   
@@ -134,9 +138,9 @@
 <nav id="article-nav">
   
   
-    <a href="/2018/07/03/Spark-使用指南/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/07/03/Spark的安装与使用方法/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Spark 的安装与使用方法</div>
+      <div class="article-nav-title">Spark的安装与使用方法</div>
     </a>
   
 </nav>
@@ -162,19 +166,10 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/tag1/">tag1</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Another-Tag/">Another Tag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Testing/">Testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li></ul>
     </div>
   </div>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/tag1/" style="font-size: 10px;">tag1</a>
-    </div>
-  </div>
 
   
     
@@ -198,7 +193,7 @@
           </li>
         
           <li>
-            <a href="/2018/07/03/Spark-使用指南/">Spark 的安装与使用方法</a>
+            <a href="/2018/07/03/Spark的安装与使用方法/">Spark的安装与使用方法</a>
           </li>
         
           <li>
@@ -228,6 +223,12 @@
     <a href="/" class="mobile-nav-link">Home</a>
   
     <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">tags</a>
+  
+    <a href="/about" class="mobile-nav-link">about</a>
   
 </nav>
     

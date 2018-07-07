@@ -5,19 +5,22 @@
   
 
   
-  <title>Xinyuan&#39;s blog</title>
+  <title>Spark的安装与使用方法 | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="It is xinyuan&apos;s first blog">
-<meta name="keywords" content="Transportation Research">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Xinyuan&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。 目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向">
+<meta name="keywords" content="spark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark的安装与使用方法">
+<meta property="og:url" content="http://yoursite.com/2018/07/03/Spark的安装与使用方法/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="It is xinyuan&apos;s first blog">
+<meta property="og:description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。 目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向">
 <meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="http://yoursite.com/img/SampleSparkApp-WordCount.png">
+<meta property="og:updated_time" content="2018-07-07T06:13:13.173Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xinyuan&#39;s blog">
-<meta name="twitter:description" content="It is xinyuan&apos;s first blog">
+<meta name="twitter:title" content="Spark的安装与使用方法">
+<meta name="twitter:description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。 目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向">
+<meta name="twitter:image" content="http://yoursite.com/img/SampleSparkApp-WordCount.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -70,72 +73,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-Execution-of-Spark-at-cluster" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/07/06/Execution-of-Spark-at-cluster/" class="article-date">
-  <time datetime="2018-07-06T01:46:19.000Z" itemprop="datePublished">2018-07-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spark使用指南/">Spark使用指南</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/06/Execution-of-Spark-at-cluster/">Execution of Spark at cluster</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一项工程技术的背后一定有一个科学原理。并行计算的科学原理并不复杂，就是一些工作可以同步的处理。但是对这些工作的真正实践还是有太多的问题要处理，没有这么简单。</p>
-<p>Spark处理并行问题的逻辑也非常简单，将一个大的数据集拆分成若干小的数据集，将各个小的数据集，然后对这些小的数据集用相同的程序来处理，得到结果之后再重新聚集到一起。</p>
-<p>这个并行处理的逻辑并不复杂，并行计算本身在算法的难处也没有体现，但是就这么一个简单的处理过程，要实现起来也不轻松。Spark是在MapReudce编程模型的原理下，加入了“内存计算”和“DAG”才拥有较高运算效率的。当然，“内存计算”和“DAG”并不是Spark运行流程的全部。这篇文章，就是要对Spark整个运行流程进行一个介绍。</p>
-<h1 id="基本概念与架构"><a href="#基本概念与架构" class="headerlink" title="基本概念与架构"></a>基本概念与架构</h1><p>硬件资源的发展。由于内存资源的扩大，可以进行内存计算。所以，这里提出了RDD的概念。<br>在RDD的基础上，建立directed acyclicity graph/DGA,进一步提高执行效率。不需要Map和Reduce之间的等待。<br>在RDD和DGA的基础上，以进程+线程的方式提高响应速度。Task是最小执行单位。stage是可并行执行的task的集合。stage的集合是job。</p>
-<p>硬件资源是通过cluster manager（cm）与deriver program交互的。dp在各个work node上若干启动进程，进程再启动线程，线程去运行任务。</p>
-<p><img src="/img/5b3ef83327043.png" alt="Architecture of Spark.png"></p>
-<p>注意：<br>（1）线程的响应速度快；<br>（2）executor中有blockmanager，就是有限进行基于内存的计算，溢出是在硬盘执行。<br>（3）job1与job2之间没有联系。<br><img src="https://i.loli.net/2018/07/06/5b3ef832bd73b.png" alt="app_driver_job_stage_task.png"></p>
-<h1 id="基本运行流程（Execution-of-Spark-at-cluster）"><a href="#基本运行流程（Execution-of-Spark-at-cluster）" class="headerlink" title="基本运行流程（Execution of Spark at cluster）"></a>基本运行流程（Execution of Spark at cluster）</h1><h2 id="deriver-program（dp）"><a href="#deriver-program（dp）" class="headerlink" title="deriver program（dp）"></a>deriver program（dp）</h2><p>dp用来构建Application（app）与集群的连接，通过spark context（sc）这个对象。</p>
-<p>假设app在node1上提交，就要在node1上创建一个driver programm，dp相当于管家程序。由driver programm去创建一个sc，这个sc相当于一个桥梁，将dp与硬件资源（cluster resource/cr）联系起来。sc本身是一个对象，里面又一些方法，编程时需要“new”一个sc。通过sc中的各种方法，我们可以去访问资源。</p>
-<p>sc创建完成后，就会向rc申请资源，但是不是直接向rc申请资源，而是向cm申请。也就是说cm掌握着cr。cr包括CPU与memory。</p>
-<p>sc的另外一个作用是计算任务（task）的分配与监控。</p>
-<h2 id="cluster-management（cm）"><a href="#cluster-management（cm）" class="headerlink" title="cluster management（cm）"></a>cluster management（cm）</h2><p>在dp创建sc的同时，cm也需要把resource管理好。dp向cr申请资源，本质上从通过spark context向cluster management申请，也就是说cm在管理cluster，分发cpu与内存等资源。</p>
-<p>cm会在cluster的work node上启动进程，这个进程称为executor，然后executor再去启动线程（thread），再有threads去执行tasks，一个thread对应一个task。<br>注：executor中的线程是也是由cluster manager分配的。</p>
-<h2 id="spark-context（sc）"><a href="#spark-context（sc）" class="headerlink" title="spark context（sc）"></a>spark context（sc）</h2><p>sc一方面想cm申请资源，另一方面分配任务。其分配任务的机制是根据RDD依赖关系生成有向无环图（DAG），DGA会被提交到DGA scheduler将DGA分解成多个stage。一个stage相当于一个task_set，所以stage会被进一步扔给底层的task scheduler（ts），ts决定task分发往某个work node。</p>
-<p>work node需要主动向sc申请运行任务，ts按照计算向数据靠拢的原则，把任务优先发送给数据所在work node。分配完任务后，executor启动线程执行task，结束后，反馈给ts。</p>
-<p><img src="https://i.loli.net/2018/07/06/5b3ef8347c26c.png" alt="Execution of Spark in cluster.png"></p>
-<h1 id="该运行流程的特点"><a href="#该运行流程的特点" class="headerlink" title="该运行流程的特点"></a>该运行流程的特点</h1><ol>
-<li>每个Application有一个专属的executor，在APP运行期间一直驻留，这就没有切换开销。executor以多线程方式运行task，所以响应时间短，启动开销小。</li>
-<li>计算过程与rm无关。</li>
-<li>Task的分配基于两个原则：（1）数据本地性；（2）推测执行机制；</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjjb15r4i0000row6cdlcofwm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Spark的安装与使用方法" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Spark的安装与使用方法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/03/Spark的安装与使用方法/" class="article-date">
   <time datetime="2018-07-03T10:20:27.000Z" itemprop="datePublished">2018-07-03</time>
@@ -152,8 +90,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/03/Spark的安装与使用方法/">Spark的安装与使用方法</a>
+    <h1 class="article-title" itemprop="name">
+      Spark的安装与使用方法
     </h1>
   
 
@@ -191,54 +129,28 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-Hello0703" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/07/02/Hello0703/" class="article-date">
-  <time datetime="2018-07-02T09:30:21.000Z" itemprop="datePublished">2018-07-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    <a href="/2018/07/06/Execution-of-Spark-at-cluster/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
         
+          Execution of Spark at cluster
+        
+      </div>
+    </a>
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/02/Hello0703/">Hello World！</a>
-    </h1>
   
+    <a href="/2018/07/02/Hello0703/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World！</div>
+    </a>
+  
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>独立写博客的想法已经出现在几个月前了，兜兜转转，到现在才写成功。Blog之前已经搭建起来了，但是如何写文章还不知道。这里，参考了<a href="https://www.jianshu.com/p/2c9f0b3b2b0e" target="_blank" rel="noopener">简书-HEXO搭建个人博客(一)：发布第一篇文章</a>的教程。<br>
-        
-          <p class="article-more-link">
-            <a href="/2018/07/02/Hello0703/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjjb1a4f30000m4w6b56dxmmy" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Another-Tag/">Another Tag</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Testing/">Testing</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-  
-
 
 </section>
         
