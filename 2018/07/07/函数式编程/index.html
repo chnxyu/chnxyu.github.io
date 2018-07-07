@@ -5,20 +5,22 @@
   
 
   
-  <title>The first spark app: word count | Xinyuan&#39;s blog</title>
+  <title>函数式编程 | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言这里重点介绍怎么编写一个spark app。">
-<meta name="keywords" content="spark实践">
+  <meta name="description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。  变量可以指向函数 函数名也是变量 传入函数(既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接">
+<meta name="keywords" content="spark实践,scala编程原理与实践">
 <meta property="og:type" content="article">
-<meta property="og:title" content="The first spark app: word count">
-<meta property="og:url" content="http://yoursite.com/2018/07/07/The-first-spark-app-word-count/index.html">
+<meta property="og:title" content="函数式编程">
+<meta property="og:url" content="http://yoursite.com/2018/07/07/函数式编程/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="前言这里重点介绍怎么编写一个spark app。">
+<meta property="og:description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。  变量可以指向函数 函数名也是变量 传入函数(既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-07T08:01:55.372Z">
+<meta property="og:image" content="http://yoursite.com/img/闭包的例子.png">
+<meta property="og:updated_time" content="2018-07-07T11:20:34.754Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="The first spark app: word count">
-<meta name="twitter:description" content="前言这里重点介绍怎么编写一个spark app。">
+<meta name="twitter:title" content="函数式编程">
+<meta name="twitter:description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。  变量可以指向函数 函数名也是变量 传入函数(既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接">
+<meta name="twitter:image" content="http://yoursite.com/img/闭包的例子.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -71,16 +73,12 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-The-first-spark-app-word-count" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-函数式编程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/07/07/The-first-spark-app-word-count/" class="article-date">
-  <time datetime="2018-07-07T06:53:12.000Z" itemprop="datePublished">2018-07-07</time>
+    <a href="/2018/07/07/函数式编程/" class="article-date">
+  <time datetime="2018-07-07T09:52:45.000Z" itemprop="datePublished">2018-07-07</time>
 </a>
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spark使用指南/">Spark使用指南</a>
-  </div>
-
   </div>
   <div class="article-inner">
     
@@ -89,7 +87,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      The first spark app: word count
+      函数式编程
     </h1>
   
 
@@ -97,18 +95,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这里重点介绍怎么编写一个spark app。<br><a id="more"></a></p>
-<h1 id="通过spark-shell编写"><a href="#通过spark-shell编写" class="headerlink" title="通过spark shell编写"></a>通过spark shell编写</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/spark</span><br><span class="line">./bin/spark-shell --master local</span><br><span class="line">val textFile=sc.textFile(&quot;file:////home/hadoop/Desktop/tem/1.txt&quot;)</span><br><span class="line">val wordCount=textFile.flatMap(line=&gt;line.split(&quot; &quot;)).map(word=&gt;(word,1))reduceByKey((a,b)=&gt;a+b)</span><br><span class="line">wordCount.collect()</span><br><span class="line">wordCount.foreach(println)</span><br></pre></td></tr></table></figure>
-<h1 id="独立编写"><a href="#独立编写" class="headerlink" title="独立编写"></a>独立编写</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/* SimpleApp.scala */</span><br><span class="line">import org.apache.spark.SparkContext</span><br><span class="line">import org.apache.spark.SparkContext._</span><br><span class="line">import org.apache.spark.SparkConf</span><br><span class="line"></span><br><span class="line">object SimpleApp &#123;</span><br><span class="line">    def main(args: Array[String]) &#123;</span><br><span class="line">        val logFile = &quot;file:///usr/local/spark/README.md&quot; // Should be some file on your system</span><br><span class="line">        val conf = new SparkConf().setAppName(&quot;Simple Application&quot;)</span><br><span class="line">        val sc = new SparkContext(conf)</span><br><span class="line">        val logData = sc.textFile(logFile, 2).cache()</span><br><span class="line">        val numAs = logData.filter(line =&gt; line.contains(&quot;a&quot;)).count()</span><br><span class="line">        val numBs = logData.filter(line =&gt; line.contains(&quot;b&quot;)).count()</span><br><span class="line">        println(&quot;Lines with a: %s, Lines with b: %s&quot;.format(numAs, numBs))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="使用intelij编写spark-app"><a href="#使用intelij编写spark-app" class="headerlink" title="使用intelij编写spark app"></a>使用intelij编写spark app</h1><p>这里参考：<a href="http://dblab.xmu.edu.cn/blog/1492-2/" target="_blank" rel="noopener">使用Intellij Idea编写Spark应用程序（Scala+SBT）</a></p>
+        <p><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014317848428125ae6aa24068b4c50a7e71501ab275d52000" target="_blank" rel="noopener">函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。</a></p>
+<ol>
+<li>变量可以指向函数</li>
+<li>函数名也是变量</li>
+<li>传入函数(既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接收另一个函数作为参数，这种函数就称之为高阶函数。)<ol>
+<li>Map/Reudce</li>
+<li>fliter</li>
+<li>sorted</li>
+</ol>
+</li>
+<li>函数作为返回值(高阶函数除了可以接受函数作为参数外，还可以把函数作为结果值返回。)</li>
+<li>闭包<br><img src="/img/闭包的例子.png" alt="闭包的例子"><br>反映了一个没有具体值的变量到有具体值的变量的过程。</li>
+<li>匿名函数（当我们在传入函数时，有些时候，不需要显式地定义函数，直接传入匿名函数更方便。就是说不命名，直接写函数体。）<br>Lambda函数</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/07/The-first-spark-app-word-count/" data-id="cjjb8iqe3000720w629kfrrsy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/07/函数式编程/" data-id="cjjb8iqea000c20w6g52dv1jz" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
 
     </footer>
   </div>
@@ -116,19 +124,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/07/07/RDD-and-DAG/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          RDD and DAG
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/07/06/Execution-of-Spark-at-cluster/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/07/07/RDD-and-DAG/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Execution of Spark at cluster</div>
+      <div class="article-nav-title">RDD and DAG</div>
     </a>
   
 </nav>

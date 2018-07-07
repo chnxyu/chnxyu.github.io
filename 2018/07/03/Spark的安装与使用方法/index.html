@@ -8,7 +8,7 @@
   <title>Spark的安装与使用方法 | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。 目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向">
-<meta name="keywords" content="spark">
+<meta name="keywords" content="spark实践">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark的安装与使用方法">
 <meta property="og:url" content="http://yoursite.com/2018/07/03/Spark的安装与使用方法/index.html">
@@ -16,7 +16,7 @@
 <meta property="og:description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。 目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向">
 <meta property="og:locale" content="zh-cn">
 <meta property="og:image" content="http://yoursite.com/img/SampleSparkApp-WordCount.png">
-<meta property="og:updated_time" content="2018-07-07T07:07:24.393Z">
+<meta property="og:updated_time" content="2018-07-07T08:01:24.908Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark的安装与使用方法">
 <meta name="twitter:description" content="前言Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。 目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向">
@@ -116,14 +116,16 @@
     find .</code></p>
 <h2 id="3-4进行具体的打包编译"><a href="#3-4进行具体的打包编译" class="headerlink" title="3.4进行具体的打包编译"></a>3.4进行具体的打包编译</h2><p><code>/usr/local/sbt/sbt package</code><br>打包编译之后，会自动生成一个target目录，生成的jar包会保存在target目录下面。</p>
 <h2 id="3-5向spark提交jar包"><a href="#3-5向spark提交jar包" class="headerlink" title="3.5向spark提交jar包"></a>3.5向spark提交jar包</h2><p><code>spark-submit （里面又一系列参数进行配置）</code></p>
-<h1 id="4-Spark集群环境搭建"><a href="#4-Spark集群环境搭建" class="headerlink" title="4. Spark集群环境搭建"></a>4. Spark集群环境搭建</h1>
+<h1 id="4-Spark集群环境搭建及在集群上运行sparkApp"><a href="#4-Spark集群环境搭建及在集群上运行sparkApp" class="headerlink" title="4. Spark集群环境搭建及在集群上运行sparkApp"></a>4. Spark集群环境搭建及在集群上运行sparkApp</h1><h2 id="4-1-集群环境搭建"><a href="#4-1-集群环境搭建" class="headerlink" title="4.1 集群环境搭建"></a>4.1 集群环境搭建</h2><p>1 主从架构，如：一主2从<br>2 HDFS有一个name node，和data node；<br>3 Spark有master node，和worker node；<br>4 部署时master node和name node部署在一起，data node和worker node部署在一起，这样可以方便数据靠拢的原则。HDFS完成数据存储，Spark core完成数据计算。</p>
+<h2 id="4-2-在集群上运行sparkApp"><a href="#4-2-在集群上运行sparkApp" class="headerlink" title="4.2 在集群上运行sparkApp"></a>4.2 在集群上运行sparkApp</h2><p>先启动hdfs，yarn，再启动spark<br>选择cluster manager<br>准备好jar包及其地址<br>开始向集群提交。<br>知道URL（地址）<br>spark://master:7077<br>通过web界面查看运行情况<br>如果是选择yarn</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/03/Spark的安装与使用方法/" data-id="cjjb2dqs60002zsw6r869hnz9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/03/Spark的安装与使用方法/" data-id="cjjb8iqe5000820w61zt8sclr" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
 
     </footer>
   </div>
@@ -169,7 +171,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Another-Tag/">Another Tag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Testing/">Testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Another-Tag/">Another Tag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Testing/">Testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark原理/">spark原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
     </div>
   </div>
 
@@ -192,6 +194,14 @@
       <ul>
         
           <li>
+            <a href="/2018/07/07/函数式编程/">函数式编程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/RDD-and-DAG/">RDD and DAG</a>
+          </li>
+        
+          <li>
             <a href="/2018/07/07/The-first-spark-app-word-count/">The first spark app: word count</a>
           </li>
         
@@ -203,14 +213,12 @@
             <a href="/2018/07/03/Spark的安装与使用方法/">Spark的安装与使用方法</a>
           </li>
         
-          <li>
-            <a href="/2018/07/02/Hello0703/">Hello World！</a>
-          </li>
-        
       </ul>
     </div>
   </div>
 
+  
+    
   
 </aside>
         

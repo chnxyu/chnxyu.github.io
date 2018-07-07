@@ -8,7 +8,7 @@
   <title>Execution of Spark at cluster | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前言一项工程技术的背后一定有一个科学原理。并行计算的科学原理并不复杂，就是一些工作可以同步的处理。但是对这些工作的真正实践还是有太多的问题要处理，没有这么简单。 Spark处理并行问题的逻辑也非常简单，将一个大的数据集拆分成若干小的数据集，将各个小的数据集，然后对这些小的数据集用相同的程序来处理，得到结果之后再重新聚集到一起。这个并行处理的逻辑并不复杂，并行计算本身在算法的难处也没有体现，但是就这">
-<meta name="keywords" content="spark">
+<meta name="keywords" content="spark原理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Execution of Spark at cluster">
 <meta property="og:url" content="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/index.html">
@@ -18,7 +18,7 @@
 <meta property="og:image" content="http://yoursite.com/img/5b3ef83327043.png">
 <meta property="og:image" content="https://i.loli.net/2018/07/06/5b3ef832bd73b.png">
 <meta property="og:image" content="https://i.loli.net/2018/07/06/5b3ef8347c26c.png">
-<meta property="og:updated_time" content="2018-07-07T06:54:23.585Z">
+<meta property="og:updated_time" content="2018-07-07T08:02:08.469Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Execution of Spark at cluster">
 <meta name="twitter:description" content="前言一项工程技术的背后一定有一个科学原理。并行计算的科学原理并不复杂，就是一些工作可以同步的处理。但是对这些工作的真正实践还是有太多的问题要处理，没有这么简单。 Spark处理并行问题的逻辑也非常简单，将一个大的数据集拆分成若干小的数据集，将各个小的数据集，然后对这些小的数据集用相同的程序来处理，得到结果之后再重新聚集到一起。这个并行处理的逻辑并不复杂，并行计算本身在算法的难处也没有体现，但是就这">
@@ -125,10 +125,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjjb2dqry0000zsw6nb2vh0ka" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjjb8iqdm000020w6aw4ktvfw" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark原理/">spark原理</a></li></ul>
 
     </footer>
   </div>
@@ -174,7 +174,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Another-Tag/">Another Tag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Testing/">Testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Another-Tag/">Another Tag</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Testing/">Testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark原理/">spark原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
     </div>
   </div>
 
@@ -197,6 +197,14 @@
       <ul>
         
           <li>
+            <a href="/2018/07/07/函数式编程/">函数式编程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/RDD-and-DAG/">RDD and DAG</a>
+          </li>
+        
+          <li>
             <a href="/2018/07/07/The-first-spark-app-word-count/">The first spark app: word count</a>
           </li>
         
@@ -208,14 +216,12 @@
             <a href="/2018/07/03/Spark的安装与使用方法/">Spark的安装与使用方法</a>
           </li>
         
-          <li>
-            <a href="/2018/07/02/Hello0703/">Hello World！</a>
-          </li>
-        
       </ul>
     </div>
   </div>
 
+  
+    
   
 </aside>
         
