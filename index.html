@@ -121,7 +121,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjj9jga260000s0w66xdaatx7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjjauc8mx0000pgw6mq01lcu0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -149,7 +149,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/03/Spark-使用指南/">Spark 学习（1）</a>
+      <a class="article-title" href="/2018/07/03/Spark-使用指南/">Spark 的安装与使用方法</a>
     </h1>
   
 
@@ -160,11 +160,25 @@
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。</p>
 <p>目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向大数据处理的Spark；（3）面向AI的TensorFlow；</p>
 <h1 id="本节概述"><a href="#本节概述" class="headerlink" title="本节概述"></a>本节概述</h1><p>Spark来源于伯克利大学的实验室。主要创新点是内存计算和DAG。<br>这篇文章的主要目的是介绍如何独立的编写Spark应用程序。Spark的优点是我在单机上跑成功的应用程序，在集群上也能成功，这是MPI不具备的，这个特点大大提高了编程效率。所以，编写Spark应用程序的步骤就可以分解为：（1）在单机上编写测试一个Spark应用程序；（2）然后在拿到集群上去运行。</p>
-<h1 id="1-在单机上编写Spark独立应用程序"><a href="#1-在单机上编写Spark独立应用程序" class="headerlink" title="1. 在单机上编写Spark独立应用程序"></a>1. 在单机上编写Spark独立应用程序</h1><h2 id="1-1-编写Spark独立应用程序"><a href="#1-1-编写Spark独立应用程序" class="headerlink" title="1.1 编写Spark独立应用程序"></a>1.1 编写Spark独立应用程序</h2><h2 id="1-2-使用开发工具编写Spark应用程序"><a href="#1-2-使用开发工具编写Spark应用程序" class="headerlink" title="1.2 使用开发工具编写Spark应用程序"></a>1.2 使用开发工具编写Spark应用程序</h2><h1 id="2-集群"><a href="#2-集群" class="headerlink" title="2. 集群"></a>2. 集群</h1><h2 id="Spark集群环境搭建"><a href="#Spark集群环境搭建" class="headerlink" title="Spark集群环境搭建"></a>Spark集群环境搭建</h2><h2 id="在集群上运行Spark应用程序"><a href="#在集群上运行Spark应用程序" class="headerlink" title="在集群上运行Spark应用程序"></a>在集群上运行Spark应用程序</h2>
+<h1 id="1-Spark-安装"><a href="#1-Spark-安装" class="headerlink" title="1. Spark 安装"></a>1. Spark 安装</h1><!-- Spark 如何在集群上安装？ -->
+<!-- /usr/local/Intellij/bin/idea.sh -->
+<h1 id="2-使用Spark-shell"><a href="#2-使用Spark-shell" class="headerlink" title="2. 使用Spark shell"></a>2. 使用Spark shell</h1><p>spark shell是一种交互式界面，可以逐行交互式的运行语句。便于学习Spark API。</p>
+<p>Spark shell启动之后实际上已经开启了一个deriver program，或者说本身就是一个driver program（任务控制节点）。任何一个Application必须有一个driver program，伴随Application运行的全过程，driver program开启在这个application提交的节点上，一般是管理节点。</p>
+<p>driver program再通过spark context对象与集群的硬件资源连接。driver内部有main函数和分布式数据集。</p>
+<p>启动spark shell时，单机模式可以配置线程的数量，集群模式有三种cluster manager。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-shell --master local[4]</span><br><span class="line">./bin/spark-shell --master spark://HOST(主机名的名称):PORT(7077) 以spark standalone模式链接到指定集群的主节点。</span><br></pre></td></tr></table></figure></p>
+<p>进入spark shell之后就可以在shell中编写代码。<br><!-- [放图spark shell] --></p>
+<h1 id="3-Spark独立应用程序编写"><a href="#3-Spark独立应用程序编写" class="headerlink" title="3. Spark独立应用程序编写"></a>3. Spark独立应用程序编写</h1><p>假设存在一个用scala编写好的spark独立应用程序，要运行它首先要进行打包编译。这里就需要介绍scala的打包编译工具，sbt（java用maven进行打包编译，python不需要打包，直接通过spark-submit命令提交）。</p>
+<h2 id="3-1-安装sbt"><a href="#3-1-安装sbt" class="headerlink" title="3.1 安装sbt"></a>3.1 安装sbt</h2><h2 id="3-2-编写应用程序"><a href="#3-2-编写应用程序" class="headerlink" title="3.2 编写应用程序"></a>3.2 编写应用程序</h2><p>目录结构要符合规范。<br><img src="/img/SampleSparkApp-WordCount.png" alt="SampleSparkApp-WordCount"></p>
+<h2 id="3-3-用sbt打包"><a href="#3-3-用sbt打包" class="headerlink" title="3.3 用sbt打包"></a>3.3 用sbt打包</h2><p>新建simple.sbt文件，在该文件中添加必要信息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">name := &quot;simpleProject(工程名称任意取)&quot;</span><br><span class="line">version := &quot;1.0&quot;（自己编写的用户程序的版本）</span><br><span class="line">ScalaVersion := &quot;2.11.8&quot;(spark所依赖的scala的版本)</span><br><span class="line">libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.1.0&quot;(依赖的库函数，要那些就加进去哪些，现在就只要spark的核心包)</span><br></pre></td></tr></table></figure></p>
+<p>为保证 sbt 能正常运行，先执行如下命令检查整个应用程序的文件结构：<br><code>cd ~/sparkapp
+    find .</code></p>
+<h2 id="3-4进行具体的打包编译"><a href="#3-4进行具体的打包编译" class="headerlink" title="3.4进行具体的打包编译"></a>3.4进行具体的打包编译</h2><p><code>/usr/local/sbt/sbt package</code><br>打包编译之后，会自动生成一个target目录，生成的jar包会保存在target目录下面。</p>
+<h2 id="3-5向spark提交jar包"><a href="#3-5向spark提交jar包" class="headerlink" title="3.5向spark提交jar包"></a>3.5向spark提交jar包</h2><p><code>spark-submit</code></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/03/Spark-使用指南/" data-id="cjj9jga300006s0w6cn8rwryd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/03/Spark-使用指南/" data-id="cjjauc8n50001pgw6t3yaxyl9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tag1/">tag1</a></li></ul>
@@ -206,7 +220,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjj9jga2b0001s0w6bybg4q4b" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjjauc8o90008pgw6abwgbpdk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tag1/">tag1</a></li></ul>
@@ -274,7 +288,7 @@
           </li>
         
           <li>
-            <a href="/2018/07/03/Spark-使用指南/">Spark 学习（1）</a>
+            <a href="/2018/07/03/Spark-使用指南/">Spark 的安装与使用方法</a>
           </li>
         
           <li>
