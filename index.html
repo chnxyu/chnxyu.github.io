@@ -100,30 +100,16 @@
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一项工程技术的背后一定有一个科学原理。并行计算的科学原理并不复杂，就是一些工作可以同步的处理。但是对这些工作的真正实践还是有太多的问题要处理，没有这么简单。</p>
 <p>Spark处理并行问题的逻辑也非常简单，将一个大的数据集拆分成若干小的数据集，将各个小的数据集，然后对这些小的数据集用相同的程序来处理，得到结果之后再重新聚集到一起。</p>
-<p>这个并行处理的逻辑并不复杂，并行计算本身在算法的难处也没有体现，但是就这么一个简单的处理过程，要实现起来也不轻松。Spark是在MapReudce编程模型的原理下，加入了“内存计算”和“DAG”才拥有较高运算效率的。当然，“内存计算”和“DAG”并不是Spark运行流程的全部。这篇文章，就是要对Spark整个运行流程进行一个介绍。</p>
-<h1 id="基本概念与架构"><a href="#基本概念与架构" class="headerlink" title="基本概念与架构"></a>基本概念与架构</h1><p>硬件资源的发展。由于内存资源的扩大，可以进行内存计算。所以，这里提出了RDD的概念。<br>在RDD的基础上，建立directed acyclicity graph/DGA,进一步提高执行效率。不需要Map和Reduce之间的等待。<br>在RDD和DGA的基础上，以进程+线程的方式提高响应速度。Task是最小执行单位。stage是可并行执行的task的集合。stage的集合是job。</p>
-<p>硬件资源是通过cluster manager（cm）与deriver program交互的。dp在各个work node上若干启动进程，进程再启动线程，线程去运行任务。</p>
-<p><img src="/img/5b3ef83327043.png" alt="Architecture of Spark.png"></p>
-<p>注意：<br>（1）线程的响应速度快；<br>（2）executor中有blockmanager，就是有限进行基于内存的计算，溢出是在硬盘执行。<br>（3）job1与job2之间没有联系。<br><img src="https://i.loli.net/2018/07/06/5b3ef832bd73b.png" alt="app_driver_job_stage_task.png"></p>
-<h1 id="基本运行流程（Execution-of-Spark-at-cluster）"><a href="#基本运行流程（Execution-of-Spark-at-cluster）" class="headerlink" title="基本运行流程（Execution of Spark at cluster）"></a>基本运行流程（Execution of Spark at cluster）</h1><h2 id="deriver-program（dp）"><a href="#deriver-program（dp）" class="headerlink" title="deriver program（dp）"></a>deriver program（dp）</h2><p>dp用来构建Application（app）与集群的连接，通过spark context（sc）这个对象。</p>
-<p>假设app在node1上提交，就要在node1上创建一个driver programm，dp相当于管家程序。由driver programm去创建一个sc，这个sc相当于一个桥梁，将dp与硬件资源（cluster resource/cr）联系起来。sc本身是一个对象，里面又一些方法，编程时需要“new”一个sc。通过sc中的各种方法，我们可以去访问资源。</p>
-<p>sc创建完成后，就会向rc申请资源，但是不是直接向rc申请资源，而是向cm申请。也就是说cm掌握着cr。cr包括CPU与memory。</p>
-<p>sc的另外一个作用是计算任务（task）的分配与监控。</p>
-<h2 id="cluster-management（cm）"><a href="#cluster-management（cm）" class="headerlink" title="cluster management（cm）"></a>cluster management（cm）</h2><p>在dp创建sc的同时，cm也需要把resource管理好。dp向cr申请资源，本质上从通过spark context向cluster management申请，也就是说cm在管理cluster，分发cpu与内存等资源。</p>
-<p>cm会在cluster的work node上启动进程，这个进程称为executor，然后executor再去启动线程（thread），再有threads去执行tasks，一个thread对应一个task。<br>注：executor中的线程是也是由cluster manager分配的。</p>
-<h2 id="spark-context（sc）"><a href="#spark-context（sc）" class="headerlink" title="spark context（sc）"></a>spark context（sc）</h2><p>sc一方面想cm申请资源，另一方面分配任务。其分配任务的机制是根据RDD依赖关系生成有向无环图（DAG），DGA会被提交到DGA scheduler将DGA分解成多个stage。一个stage相当于一个task_set，所以stage会被进一步扔给底层的task scheduler（ts），ts决定task分发往某个work node。</p>
-<p>work node需要主动向sc申请运行任务，ts按照计算向数据靠拢的原则，把任务优先发送给数据所在work node。分配完任务后，executor启动线程执行task，结束后，反馈给ts。</p>
-<p><img src="https://i.loli.net/2018/07/06/5b3ef8347c26c.png" alt="Execution of Spark in cluster.png"></p>
-<h1 id="该运行流程的特点"><a href="#该运行流程的特点" class="headerlink" title="该运行流程的特点"></a>该运行流程的特点</h1><ol>
-<li>每个Application有一个专属的executor，在APP运行期间一直驻留，这就没有切换开销。executor以多线程方式运行task，所以响应时间短，启动开销小。</li>
-<li>计算过程与rm无关。</li>
-<li>Task的分配基于两个原则：（1）数据本地性；（2）推测执行机制；</li>
-</ol>
-
+<p>这个并行处理的逻辑并不复杂，并行计算本身在算法的难处也没有体现，但是就这么一个简单的处理过程，要实现起来也不轻松。Spark是在MapReudce编程模型的原理下，加入了“内存计算”和“DAG”才拥有较高运算效率的。当然，“内存计算”和“DAG”并不是Spark运行流程的全部。这篇文章，就是要对Spark整个运行流程进行一个介绍。<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/06/Execution-of-Spark-at-cluster/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjjb15r4i0000row6cdlcofwm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjjb1x07r0002wow69cazuaf2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
@@ -162,28 +148,16 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。</p>
-<p>目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向大数据处理的Spark；（3）面向AI的TensorFlow；</p>
-<h1 id="本节概述"><a href="#本节概述" class="headerlink" title="本节概述"></a>本节概述</h1><p>Spark来源于伯克利大学的实验室。主要创新点是内存计算和DAG。<br>这篇文章的主要目的是介绍如何独立的编写Spark应用程序。Spark的优点是我在单机上跑成功的应用程序，在集群上也能成功，这是MPI不具备的，这个特点大大提高了编程效率。所以，编写Spark应用程序的步骤就可以分解为：（1）在单机上编写测试一个Spark应用程序；（2）然后在拿到集群上去运行。</p>
-<h1 id="1-Spark-安装"><a href="#1-Spark-安装" class="headerlink" title="1. Spark 安装"></a>1. Spark 安装</h1><!-- Spark 如何在集群上安装？ -->
-<!-- /usr/local/Intellij/bin/idea.sh -->
-<h1 id="2-使用Spark-shell"><a href="#2-使用Spark-shell" class="headerlink" title="2. 使用Spark shell"></a>2. 使用Spark shell</h1><p>spark shell是一种交互式界面，可以逐行交互式的运行语句。便于学习Spark API。</p>
-<p>Spark shell启动之后实际上已经开启了一个deriver program，或者说本身就是一个driver program（任务控制节点）。任何一个Application必须有一个driver program，伴随Application运行的全过程，driver program开启在这个application提交的节点上，一般是管理节点。</p>
-<p>driver program再通过spark context对象与集群的硬件资源连接。driver内部有main函数和分布式数据集。</p>
-<p>启动spark shell时，单机模式可以配置线程的数量，集群模式有三种cluster manager。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-shell --master local[4]</span><br><span class="line">./bin/spark-shell --master spark://HOST(主机名的名称):PORT(7077) 以spark standalone模式链接到指定集群的主节点。</span><br></pre></td></tr></table></figure></p>
-<p>进入spark shell之后就可以在shell中编写代码。<br><!-- [放图spark shell] --></p>
-<h1 id="3-Spark独立应用程序编写与运行"><a href="#3-Spark独立应用程序编写与运行" class="headerlink" title="3. Spark独立应用程序编写与运行"></a>3. Spark独立应用程序编写与运行</h1><p>假设存在一个用scala编写好的spark独立应用程序，要运行它首先要进行打包编译。这里就需要介绍scala的打包编译工具，sbt（java用maven进行打包编译，python不需要打包，直接通过spark-submit命令提交）。</p>
-<h2 id="3-1-安装sbt"><a href="#3-1-安装sbt" class="headerlink" title="3.1 安装sbt"></a>3.1 安装sbt</h2><h2 id="3-2-编写应用程序"><a href="#3-2-编写应用程序" class="headerlink" title="3.2 编写应用程序"></a>3.2 编写应用程序</h2><p>目录结构要符合规范。<br><img src="/img/SampleSparkApp-WordCount.png" alt="SampleSparkApp-WordCount"></p>
-<h2 id="3-3-用sbt打包"><a href="#3-3-用sbt打包" class="headerlink" title="3.3 用sbt打包"></a>3.3 用sbt打包</h2><p>新建simple.sbt文件，在该文件中添加必要信息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">name := &quot;simpleProject(工程名称任意取)&quot;</span><br><span class="line">version := &quot;1.0&quot;（自己编写的用户程序的版本）</span><br><span class="line">ScalaVersion := &quot;2.11.8&quot;(spark所依赖的scala的版本)</span><br><span class="line">libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.1.0&quot;(依赖的库函数，要那些就加进去哪些，现在就只要spark的核心包)</span><br></pre></td></tr></table></figure></p>
-<p>为保证 sbt 能正常运行，先执行如下命令检查整个应用程序的文件结构：<br><code>cd ~/sparkapp
-    find .</code></p>
-<h2 id="3-4进行具体的打包编译"><a href="#3-4进行具体的打包编译" class="headerlink" title="3.4进行具体的打包编译"></a>3.4进行具体的打包编译</h2><p><code>/usr/local/sbt/sbt package</code><br>打包编译之后，会自动生成一个target目录，生成的jar包会保存在target目录下面。</p>
-<h2 id="3-5向spark提交jar包"><a href="#3-5向spark提交jar包" class="headerlink" title="3.5向spark提交jar包"></a>3.5向spark提交jar包</h2><p><code>spark-submit （里面又一系列参数进行配置）</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/spark</span><br><span class="line">./bin/spark-shell --master local</span><br><span class="line">val textFile=sc.textFile(&quot;file:////home/hadoop/Desktop/tem/1.txt&quot;)</span><br><span class="line">val wordCount=textFile.flatMap(line=&gt;line.split(&quot; &quot;)).map(word=&gt;(word,1))reduceByKey((a,b)=&gt;a+b)</span><br><span class="line">wordCount.collect()</span><br><span class="line">wordCount.foreach(println)</span><br></pre></td></tr></table></figure>
-
+<p>目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向大数据处理的Spark；（3）面向AI的TensorFlow；<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/03/Spark的安装与使用方法/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/03/Spark的安装与使用方法/" data-id="cjjb15r4q0002row6212ygui0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/03/Spark的安装与使用方法/" data-id="cjjb1x07w0004wow6u6t1yx93" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
@@ -226,7 +200,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjjb1a4f30000m4w6b56dxmmy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjjb1x07k0000wow6ih520qdo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Another-Tag/">Another Tag</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Testing/">Testing</a></li></ul>
