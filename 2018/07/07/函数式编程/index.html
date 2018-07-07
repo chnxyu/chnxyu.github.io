@@ -7,19 +7,19 @@
   
   <title>函数式编程 | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。  变量可以指向函数 函数名也是变量 传入函数(既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接">
+  <meta name="description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。">
 <meta name="keywords" content="spark实践,scala编程原理与实践">
 <meta property="og:type" content="article">
 <meta property="og:title" content="函数式编程">
 <meta property="og:url" content="http://yoursite.com/2018/07/07/函数式编程/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。  变量可以指向函数 函数名也是变量 传入函数(既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接">
+<meta property="og:description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。">
 <meta property="og:locale" content="zh-cn">
 <meta property="og:image" content="http://yoursite.com/img/闭包的例子.png">
-<meta property="og:updated_time" content="2018-07-07T11:20:34.754Z">
+<meta property="og:updated_time" content="2018-07-07T11:26:18.735Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="函数式编程">
-<meta name="twitter:description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。  变量可以指向函数 函数名也是变量 传入函数(既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接">
+<meta name="twitter:description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。">
 <meta name="twitter:image" content="http://yoursite.com/img/闭包的例子.png">
   
   
@@ -95,7 +95,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014317848428125ae6aa24068b4c50a7e71501ab275d52000" target="_blank" rel="noopener">函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。</a></p>
+        <p><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014317848428125ae6aa24068b4c50a7e71501ab275d52000" target="_blank" rel="noopener">函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。</a><br><a id="more"></a></p>
 <ol>
 <li>变量可以指向函数</li>
 <li>函数名也是变量</li>
@@ -113,7 +113,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/07/函数式编程/" data-id="cjjb8iqea000c20w6g52dv1jz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/07/函数式编程/" data-id="cjjbbpuqa00081ow6hmjtmjff" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
