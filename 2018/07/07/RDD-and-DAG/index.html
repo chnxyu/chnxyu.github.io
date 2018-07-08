@@ -7,18 +7,20 @@
   
   <title>RDD and DAG | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="It is xinyuan&apos;s first blog">
+  <meta name="description" content="为什么要设计RDD">
 <meta name="keywords" content="spark原理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RDD and DAG">
 <meta property="og:url" content="http://yoursite.com/2018/07/07/RDD-and-DAG/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="It is xinyuan&apos;s first blog">
+<meta property="og:description" content="为什么要设计RDD">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-07T08:02:58.679Z">
+<meta property="og:image" content="http://yoursite.com/img/RDD执行过程（DAG）.png">
+<meta property="og:updated_time" content="2018-07-08T07:31:30.353Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RDD and DAG">
-<meta name="twitter:description" content="It is xinyuan&apos;s first blog">
+<meta name="twitter:description" content="为什么要设计RDD">
+<meta name="twitter:image" content="http://yoursite.com/img/RDD执行过程（DAG）.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -97,11 +99,39 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h1 id="为什么要设计RDD"><a href="#为什么要设计RDD" class="headerlink" title="为什么要设计RDD"></a>为什么要设计RDD</h1><a id="more"></a>
+<p>我们知道了基于内存的计算，避免反复的磁盘读写，大大提高了效率。但事实上spark更进一步，他对基于内存的数据提出更详细的描述和定义，就是RDD（Resilient Distributed Datasets）。RDD是内存计算的组件之一。</p>
+<ol>
+<li>RDD是屏蔽了分布式，看起来就像单机操作。这是RDD的优点。</li>
+<li>RDD是一个只读的，这样的好处是？也就是说RDD只能新建，不能修改。这也就催生了DAG。所以，这也就导致了RDD的转换是非常重要的。RDD提供了比HadoopMR更加丰富的操作符，这位DAG的创建打下了基础。<ol>
+<li>Map</li>
+<li>Reduce</li>
+<li>Fliter</li>
+<li>……</li>
+</ol>
+</li>
+<li>RDD本质上存储数据的方式是分布式的。 从而为分布式的内存计算打下了基础。并且是在内存中的，不是在磁盘上，这点与HDFS不一样。而RDD到底该怎么分，这是可以设置的。</li>
+<li>有向无环图不是基于RDD才能设计的，但是RDD帮助了DAG的应用，没有RDD，DAG在Hadoop MapReduce方式下没法应用。RDD更具有弹性，更加general。</li>
+<li>都是粗粒度的操作。也就是说对一个集合采用相同的处理方式。而没有办法去处理其中的元素。但是，功能还是十分强大。</li>
+<li>这些RDD操作接口非常简单。<!-- [用一个例子去说明] -->
+</li>
+</ol>
+<h1 id="RDD的操作，更加丰富。"><a href="#RDD的操作，更加丰富。" class="headerlink" title="RDD的操作，更加丰富。"></a>RDD的操作，更加丰富。</h1><p>在Hadoop MapReduce中只有Map和Reduce两种接口。在spark中，这种功能进行了扩展，提供了更加丰富的功能（API接口）。这个转换操作为迭代式并行计算提供了可能和基础。<br>RDD操作可以被分为两大类：（1）动作 action；（2）转换 transformation。</p>
+<h1 id="DAG-（RDD的执行过程）"><a href="#DAG-（RDD的执行过程）" class="headerlink" title="DAG = （RDD的执行过程）"></a>DAG = （RDD的执行过程）</h1><p>RDD一般是通过读入外部数据源来创建。他会分布式地保存到很多台机器上面。<br>RDD通过转换操作来获得新的RDD从而推进整个算法。这些操作首先会被解析，但是不执行，会被解析成一个DAG。这个DAG最后会被一个动作（action）触发。这种情形称为惰性机制。<br><img src="/img/RDD执行过程（DAG）.png" alt="RDD执行过程（DAG）"></p>
+<h1 id="RDD的特性"><a href="#RDD的特性" class="headerlink" title="RDD的特性"></a>RDD的特性</h1><h2 id="1-DAG"><a href="#1-DAG" class="headerlink" title="1 DAG"></a>1 DAG</h2><p>生成一张有向无圈图。根据有向无圈图进行计算。<br>DAG使其天生具有容错性。现有的容错机制有两种：（1）检查点（2）日志。<br>（1）检查点对于分布式系统代价很高。<br>（2）日志规模大，代价高。<br>DAG记录了整个算法，而不是记录计算结果。如果任何中间一步的计算出现问题，可以根据这个DAG算法局部的重新算一遍。相较的，不需要在所有节点重新算一遍。</p>
+<h2 id="2-中间结果放在内存中。"><a href="#2-中间结果放在内存中。" class="headerlink" title="2 中间结果放在内存中。"></a>2 中间结果放在内存中。</h2><p>避免磁盘的I/O开销</p>
+<h2 id="3-RDD本身就是Java对象。"><a href="#3-RDD本身就是Java对象。" class="headerlink" title="3 RDD本身就是Java对象。"></a>3 RDD本身就是Java对象。</h2><p>避免了不必要的对象序列化与反序列化。</p>
+<h1 id="RDD的依赖关系。"><a href="#RDD的依赖关系。" class="headerlink" title="RDD的依赖关系。"></a>RDD的依赖关系。</h1><p>依赖分为宽依赖和窄依赖。依赖的类型非常重要，这涉及到是否要在集群中交换数据。<br>窄依赖基本在本地执行，是收敛型的。<br>宽依赖，是放射型的。宽依赖需要shuffle操作。洗牌。</p>
+<h1 id="stage的划分"><a href="#stage的划分" class="headerlink" title="stage的划分"></a>stage的划分</h1><p>DAG还需要进一步拆分，阶段的拆分以宽依赖为标准。宽依赖之前进行并行计算，宽依赖时数据要进行聚合。也就是说并行计算的局部完成。stage的功能就是将整个任务拆分成合理执行单元。分而治之。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li>DAG和stage的划分提高了计算效率，类似非同步的并行机制。</li>
+<li>新建RDD–&gt;spark context生成DAG–&gt; DAG scheduler负责进一步拆分成stage–&gt;stage中的tasks被 task scheduler发送到各个work node进行工作。</li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/07/RDD-and-DAG/" data-id="cjjbbu60w000658w6av9htgvn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/07/RDD-and-DAG/" data-id="cjjce7j6a00031sw642h30y6k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark原理/">spark原理</a></li></ul>
