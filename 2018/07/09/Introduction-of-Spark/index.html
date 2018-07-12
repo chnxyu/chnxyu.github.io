@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="高性能计算与云计算是什么关系？spark能否用于高性能计算？">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-09T02:32:51.182Z">
+<meta property="og:updated_time" content="2018-07-10T15:17:58.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction of Spark">
 <meta name="twitter:description" content="高性能计算与云计算是什么关系？spark能否用于高性能计算？">
@@ -97,7 +97,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>高性能计算与云计算是什么关系？spark能否用于高性能计算？<br><a id="more"></a><br>根据《2017全国高性能学术年会》（2017年会）中的PPT-《2017+TOP100排行榜+vFinal》，可以清楚的知道云计算集群也是HPC的一部分，云计算是HPC应用系统的重要组成部分。另外一个问题要提出，什么是HPC，HPC比的就是一个指标：PFLOTS。而且数据分析/机器学习2017年占据了56%的份额。除了CPU集群，现在的高性能集群更多的是异构集群，GPU集群，FPGA集群。但是根据2017年会中的《大数据与人工智能》异构集群很困难，GPU计算上有优势，但是CPU更加全面。这个毕竟是硬件方面的发展。另外，软件端也有竞争，spark是参与者之一（MPI, MR, Tensorflow）。</p>
+        <p>高性能计算与云计算是什么关系？spark能否用于高性能计算？<br><a id="more"></a></p>
+<ol>
+<li>根据《2017全国高性能学术年会》（2017年会）中的PPT-《2017+TOP100排行榜+vFinal》，可以清楚的知道云计算集群也是HPC的一部分，云计算是HPC应用系统的重要组成部分。</li>
+<li>Ni et al. (2017)，将商用的云计算集群，如（Amazon’s EC2）与专用HPC Cluster分开，但是没有进行直接的对比。既然是分开的，还是说明计算用途是不一样的。另外，Ni et al. (2017)对比了spark与MPI，MPI的性能确实更好。但是spark在用户友好度，容错等方面具有很大优势。虽然spark不是性能最好的软件工具，然是也完全可以算作是高性能计算平台，特别是针对大数据处理的。总的来说，spark在效率与robustness方面达到了一个较好平衡。<br>Ref: Ni, E.C., Ciocan, D.F., Henderson, S.G., Hunter, S.R., 2017. Efficient Ranking and Selection in Parallel Computing Environments. Operations Research 65(3), 821-836.</li>
+</ol>
+<p>另外一个问题要提出，什么是HPC，HPC比的就是一个指标：PFLOTS。而且数据分析/机器学习2017年占据了56%的份额。除了CPU集群，现在的高性能集群更多的是异构集群，GPU集群，FPGA集群。但是根据2017年会中的《大数据与人工智能》异构集群很困难，GPU计算上有优势，但是CPU更加全面。这个毕竟是硬件方面的发展。另外，软件端也有竞争，spark是参与者之一（MPI, MR, Tensorflow）。spark如果光比较PFLOTS肯定是没有优势的，但是在云服务，大数据方面是有独特优势的。</p>
 <p>Spark是大数据处理，和云计算的重要参与者。我这里主要利用的是其内存计算技术。另外，可以在case study里面show的是云计算。<br>Spark的优势：（1）内存计算技术：为了使程序运行更快，Spark提供了内存计算，减少了迭代计算时的IO开销；（2）DGA技术。<br>要了解spark，首先需要了解scala。所以，我们在附件1中对scala进行介绍。总结一下特性：（1）多范式，函数式，并发性好。（2）运行在JAVA虚拟机上，完全兼容java。（3）语法简洁。<br>Spark与Hadoop对比：（1）hadoop表达能力有限，所有的编程工作都是并行的，而事实上很多任务是并串混合的。（2）磁盘的I/O开销大。基于磁盘的运算。每次Map都把结果写入磁盘。（3）延迟高，每个任务都没严格的切分成两个阶段，必须等所有的Map结束后，Reduce才能启动。所以，难以胜任多阶段的计算任务。<br>相比于Hadoop，spark：（1）继承MapReduce的计算模式；同时，提供了除Map和Reduce以外的更多操作功能；groupby，fliter，等。（2）基于内存的计算；（3）DAG的任务调度机制。<br>更详细的介绍看“Execution of Spark on Cluster” and “RDD and DAG”</p>
 <p>scala是spark编程基础。</p>
 <ol>
@@ -132,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/09/Introduction-of-Spark/" data-id="cjjdmxjaz000o4kw6rbzqwn9w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/09/Introduction-of-Spark/" data-id="cjjikrrmr0006dgw6ecd1b0vw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark原理/">spark原理</a></li></ul>
@@ -142,6 +147,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/07/10/deploy-Spark-on-cluster/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          deploy Hadoop on cluster/cloud
+        
+      </div>
+    </a>
   
   
     <a href="/2018/07/07/函数式编程/" id="article-nav-older" class="article-nav-link-wrap">
@@ -172,7 +186,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark原理/">spark原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark原理/">spark原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark实践/">spark实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集群维护/">集群维护</a></li></ul>
     </div>
   </div>
 
@@ -195,6 +209,10 @@
       <ul>
         
           <li>
+            <a href="/2018/07/10/deploy-Spark-on-cluster/">deploy Hadoop on cluster/cloud</a>
+          </li>
+        
+          <li>
             <a href="/2018/07/09/Introduction-of-Spark/">Introduction of Spark</a>
           </li>
         
@@ -208,10 +226,6 @@
         
           <li>
             <a href="/2018/07/07/The-first-spark-app-word-count/">The first spark app: word count</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/06/Execution-of-Spark-at-cluster/">Execution of Spark at cluster</a>
           </li>
         
       </ul>

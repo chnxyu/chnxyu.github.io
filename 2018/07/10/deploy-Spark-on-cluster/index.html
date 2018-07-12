@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>deploy Hadoop on cluster/cloud | Xinyuan&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言 云中部署服务器 hadoop2.7.6集群环境搭建 异常分析">
+<meta name="keywords" content="集群维护">
+<meta property="og:type" content="article">
+<meta property="og:title" content="deploy Hadoop on cluster&#x2F;cloud">
+<meta property="og:url" content="http://yoursite.com/2018/07/10/deploy-Spark-on-cluster/index.html">
+<meta property="og:site_name" content="Xinyuan&#39;s blog">
+<meta property="og:description" content="前言 云中部署服务器 hadoop2.7.6集群环境搭建 异常分析">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="http://yoursite.com/img/step%201.png">
+<meta property="og:image" content="http://yoursite.com/img/step%202.png">
+<meta property="og:image" content="http://yoursite.com/img/step%203.png">
+<meta property="og:updated_time" content="2018-07-12T13:16:48.136Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="deploy Hadoop on cluster&#x2F;cloud">
+<meta name="twitter:description" content="前言 云中部署服务器 hadoop2.7.6集群环境搭建 异常分析">
+<meta name="twitter:image" content="http://yoursite.com/img/step%201.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Xinyuan&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Monash Ph.D. candidate</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">categories</a>
+        
+          <a class="main-nav-link" href="/tags">tags</a>
+        
+          <a class="main-nav-link" href="/about">about</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-deploy-Spark-on-cluster" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/10/deploy-Spark-on-cluster/" class="article-date">
+  <time datetime="2018-07-10T07:59:06.689Z" itemprop="datePublished">2018-07-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark使用指南/">Spark使用指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      deploy Hadoop on cluster/cloud
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><ol>
+<li>云中部署服务器</li>
+<li>hadoop2.7.6集群环境搭建</li>
+<li>异常分析<a id="more"></a>
+</li>
+</ol>
+<h1 id="1-云中部署服务器"><a href="#1-云中部署服务器" class="headerlink" title="1. 云中部署服务器"></a>1. 云中部署服务器</h1><p>如果对集群没有长期持续的使用需求，在云上部署服务器来运行程序是相当划算，也是相当方便的选择。<br>目前全世界前三大云服务提供商是AWS，微软，阿里。<br>本地部署选择的服务器提供商是<a href="https://my.vultr.com" target="_blank" rel="noopener">“vultr”</a>, vultr的性价比很高。<br>这里安装了三台云服务器，机房地点西雅图，操作系统Ubuntu，提供内网IP。<br>这里注意，在vultr上不直接提供内网的IP地址，需要自己配置。<br>需要参考如下两篇文章：</p>
+<ol>
+<li><a href="https://www.vultr.com/docs/configuring-private-network" target="_blank" rel="noopener">Configuring Private Network</a></li>
+<li><a href="https://faq.xiaoz.me/archives/85.html" target="_blank" rel="noopener">CentOS配置Vultr私有网络，实现内网通信</a></li>
+</ol>
+<p>私有IP的配置比较tricky。这里简单列出几个关键步骤：<br><img src="/img/step 1.png" alt="step 1"><br><img src="/img/step 2.png" alt="step 2"><br><img src="/img/step 3.png" alt="step 3"><br>配置完内网地址之后，ping一下这些地址，看看时候能互相ping通。</p>
+<h1 id="2-Hadoop-2-7-6分布式集群环境搭建"><a href="#2-Hadoop-2-7-6分布式集群环境搭建" class="headerlink" title="2. Hadoop 2.7.6分布式集群环境搭建"></a>2. Hadoop 2.7.6分布式集群环境搭建</h1><p>Ref <a href="http://dblab.xmu.edu.cn/blog/install-hadoop-cluster/" target="_blank" rel="noopener">Hadoop集群安装配置教程</a></p>
+<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><p>在网上租用几台服务器。<a href="https://my.vultr.com/" target="_blank" rel="noopener">vultr</a>.<br>一个主节点，2个从节点。<br>三台电脑主机的用户名均为root.<br>三台机器可以ping双方的ip来测试三台电脑的连通性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">master: 10.4.96.3; root; !m8W.8bZfXRyCraS</span><br><span class="line">slave1: 10.4.96.4; root; _vE2Q]M(E._#1?F-</span><br><span class="line">slave2: 10.4.96.5; root; -Ds7eWY-$!DNz4N,</span><br></pre></td></tr></table></figure></p>
+<p>查看当前主机打IP.注意，此处不是必须IP地址都在同一个局域网中。<br><code>ifconfig</code><br>三台机器可以ping双方的ip来测试三台电脑的连通性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ping 66.42.65.91</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>为了更好的在Shell中区分三台主机，修改其显示的主机名，执行如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hostname</span><br></pre></td></tr></table></figure></p>
+<p>修改三台机器的/etc/hosts文件,添加同样的配置：<br><code>sudo vim /etc/hosts</code></p>
+<h2 id="配置ssh无密码登录本机和访问集群机器"><a href="#配置ssh无密码登录本机和访问集群机器" class="headerlink" title="配置ssh无密码登录本机和访问集群机器"></a>配置ssh无密码登录本机和访问集群机器</h2><p>请运行如下命令，安装openssh-server,并生成ssh公钥。<br><code>ssh-keygen -t rsa -P &quot;&quot;</code><br><code>cat $HOME/.ssh/id_rsa.pub &gt;&gt; $HOME/.ssh/authorized_keys</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp ~/.ssh/id_rsa.pub root@master:/root/</span><br><span class="line">scp ~/.ssh/id_rsa.pub root@slave01:/root/</span><br></pre></td></tr></table></figure>
+<p>接着在slave01、slave02主机上将master的公钥加入各自的节点上,在slave01和slave02执行如下命令:<br><code>cat ~/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</code><br><code>rm ~/id_rsa.pub</code></p>
+<h2 id="JDK和Hadoop安装配置"><a href="#JDK和Hadoop安装配置" class="headerlink" title="JDK和Hadoop安装配置"></a>JDK和Hadoop安装配置</h2><p>分别在master主机和slave01、slave02主机上安装JDK和Hadoop，并加入环境变量。</p>
+<h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><p>分别在master主机和slave01,slave02主机上执行安装JDK的操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install default-jdk</span><br></pre></td></tr></table></figure></p>
+<p>编辑~/.bashrc文件，添加如下内容：<br><code>export JAVA_HOME=/usr/lib/jvm/default-java</code><br>接着让环境变量生效，执行如下代码：<br><code>source ~/.bashrc</code></p>
+<h3 id="安装Hadoop"><a href="#安装Hadoop" class="headerlink" title="安装Hadoop"></a>安装Hadoop</h3><p>先在master主机上做安装Hadoop，暂时不需要在slave01,slave02主机上安装Hadoop.稍后会把master配置好的Hadoop发送给slave01,slave02.<br>在master主机执行如下操作：<br>首先要下载hadoop到本地<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://mirrors.shu.edu.cn/apache/hadoop/common/hadoop-2.7.6/hadoop-2.7.6.tar.gz</span><br><span class="line">sudo tar -zxf ~/hadoop-2.7.6.tar.gz -C /usr/local   </span><br><span class="line">cd /usr/local/</span><br><span class="line">sudo mv ./hadoop-2.7.6/ ./hadoop  </span><br><span class="line">sudo chown -R root ./hadoop</span><br></pre></td></tr></table></figure></p>
+<p>编辑vim ~/.bashrc文件，添加如下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME=/usr/local/hadoop</span><br><span class="line">export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin</span><br></pre></td></tr></table></figure></p>
+<p>接着让环境变量生效，执行如下代码：<br><code>source ~/.bashrc</code></p>
+<h2 id="Hadoop集群配置"><a href="#Hadoop集群配置" class="headerlink" title="Hadoop集群配置"></a>Hadoop集群配置</h2><p>修改master主机修改Hadoop如下配置文件，这些配置文件都位于cd /usr/local/hadoop/etc/hadoop目录下。<br>修改vim slaves：<br>这里把DataNode的主机名写入该文件，每行一个。这里让master节点主机仅作为NameNode使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">slave01</span><br><span class="line">slave02</span><br></pre></td></tr></table></figure></p>
+<p>修改vim core-site.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/usr/local/hadoop/tmp&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;Abase for other temporary directories.&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://master:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>修改vim hdfs-site.xml：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;3&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>修改vim mapred-site.xml(复制cp mapred-site.xml.template mapred-site.xml,再修改文件名)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">      &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">      &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>修改vim yarn-site.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;!-- Site specific YARN configuration properties --&gt;</span><br><span class="line">     &lt;property&gt;</span><br><span class="line">         &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">         &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">     &lt;/property&gt;</span><br><span class="line">     &lt;property&gt;</span><br><span class="line">         &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">         &lt;value&gt;master&lt;/value&gt;</span><br><span class="line">     &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>配置好后，将 master 上的 /usr/local/Hadoop 文件夹复制到各个节点上。之前有跑过伪分布式模式，建议在切换到集群模式前先删除之前的临时文件。在 master 节点主机上执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/</span><br><span class="line">rm -rf ./hadoop/tmp   # 删除临时文件</span><br><span class="line">rm -rf ./hadoop/logs/*   # 删除日志文件</span><br><span class="line">tar -zcf ~/hadoop.master.tar.gz ./hadoop</span><br><span class="line">cd ~</span><br><span class="line">scp ./hadoop.master.tar.gz slave01:/root</span><br><span class="line">scp ./hadoop.master.tar.gz slave02:/root</span><br></pre></td></tr></table></figure></p>
+<p>在slave01,slave02节点上执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -rf /usr/local/hadoop/</span><br><span class="line">sudo tar -zxf ~/hadoop.master.tar.gz -C /usr/local</span><br><span class="line">sudo chown -R root /usr/local/hadoop</span><br></pre></td></tr></table></figure></p>
+<h2 id="启动hadoop集群"><a href="#启动hadoop集群" class="headerlink" title="启动hadoop集群"></a>启动hadoop集群</h2><p>在master主机上执行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/hadoop</span><br><span class="line">bin/hdfs namenode -format</span><br><span class="line">sbin/start-all.sh</span><br></pre></td></tr></table></figure></p>
+<p>运行后，在master，slave01,slave02运行jps命令，查看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jps</span><br></pre></td></tr></table></figure></p>
+<p>关闭hadoop集群<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h1 id="3-异常情况"><a href="#3-异常情况" class="headerlink" title="3. 异常情况"></a>3. 异常情况</h1><p>Ref:</p>
+<ol>
+<li><a href="https://www.aliyun.com/jiaocheng/474325.html" target="_blank" rel="noopener">使用docker安装部署Spark集群来训练CNN（含Python实例）</a></li>
+<li><a href="http://dblab.xmu.edu.cn/blog/1177-2/" target="_blank" rel="noopener">Hadoop 2.7分布式集群环境搭建</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/10/deploy-Spark-on-cluster/" data-id="cjjikrrmy000cdgw6rrs0sx7n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/集群维护/">集群维护</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/07/09/Introduction-of-Spark/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Introduction of Spark</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Spark使用指南/">Spark使用指南</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark原理/">spark原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark实践/">spark实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集群维护/">集群维护</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/07/10/deploy-Spark-on-cluster/">deploy Hadoop on cluster/cloud</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/09/Introduction-of-Spark/">Introduction of Spark</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/函数式编程/">函数式编程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/RDD-and-DAG/">RDD and DAG</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/The-first-spark-app-word-count/">The first spark app: word count</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Xinyuan Chan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">tags</a>
+  
+    <a href="/about" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
