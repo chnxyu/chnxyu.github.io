@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>deploy Spark on cluster/cloud | Xinyuan&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言 云中部署Spark">
+<meta name="keywords" content="集群维护">
+<meta property="og:type" content="article">
+<meta property="og:title" content="deploy Spark on cluster&#x2F;cloud">
+<meta property="og:url" content="http://yoursite.com/2018/07/13/deploy-Spark-on-cluster/index.html">
+<meta property="og:site_name" content="Xinyuan&#39;s blog">
+<meta property="og:description" content="前言 云中部署Spark">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2018-07-13T15:39:20.733Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="deploy Spark on cluster&#x2F;cloud">
+<meta name="twitter:description" content="前言 云中部署Spark">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Xinyuan&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Monash Ph.D. candidate</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">categories</a>
+        
+          <a class="main-nav-link" href="/tags">tags</a>
+        
+          <a class="main-nav-link" href="/about">about</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-deploy-Spark-on-cluster" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/13/deploy-Spark-on-cluster/" class="article-date">
+  <time datetime="2018-07-13T09:06:36.196Z" itemprop="datePublished">2018-07-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark使用指南/">Spark使用指南</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      deploy Spark on cluster/cloud
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><ol>
+<li>云中部署Spark<a id="more"></a>
+</li>
+</ol>
+<h1 id="1-云中部署Spark"><a href="#1-云中部署Spark" class="headerlink" title="1. 云中部署Spark"></a>1. 云中部署Spark</h1><p>前提是Hadoop2.7搭建完毕。</p>
+<h1 id="1-1-下载Spark"><a href="#1-1-下载Spark" class="headerlink" title="1.1 下载Spark"></a>1.1 下载Spark</h1><p>版本一般选择最新版本。选择pre-built with user provided hadoop，不要下载源文件。<br>选择对应版本的scala</p>
+<ol>
+<li>安装顺序是这样的：先装Linux，再装JDK，再装Hadoop，那么问题来了，要不要单独安装scala还是spark自带了scala？不知道，先安装spark，然后试一下scala就行。</li>
+</ol>
+<p>执行如下命令进行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget https://archive.apache.org/dist/spark/spark-2.3.1/spark-2.3.1-bin-without-hadoop.tgz</span><br><span class="line">sudo tar -zxf ~/spark-2.3.1-bin-without-hadoop.tgz -C /usr/local/</span><br><span class="line">cd /usr/local</span><br><span class="line">sudo mv ./spark-2.3.1-bin-without-hadoop/ ./spark</span><br><span class="line">sudo chown -R root:root ./spark</span><br></pre></td></tr></table></figure></p>
+<h2 id="1-2-配置环境变量"><a href="#1-2-配置环境变量" class="headerlink" title="1.2 配置环境变量"></a>1.2 配置环境变量</h2><p>在Mster节点主机的终端中执行如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br><span class="line"></span><br><span class="line">export SPARK_HOME=/usr/local/spark</span><br><span class="line">export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin</span><br><span class="line"></span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<h2 id="1-3-Spark配置"><a href="#1-3-Spark配置" class="headerlink" title="1.3 Spark配置"></a>1.3 Spark配置</h2><p>在Master节点主机上进行如下操作：</p>
+<ol>
+<li><p>配置slaves文件</p>
+<ol>
+<li><p>将 slaves.template 拷贝到 slaves</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/spark/</span><br><span class="line">cp ./conf/slaves.template ./conf/slaves</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>slaves文件设置Worker节点。编辑slaves内容,把默认内容localhost替换成如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">slave01</span><br><span class="line">slave02</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>配置spark-env.sh文件</p>
+<ol>
+<li><p>将 spark-env.sh.template 拷贝到 spark-env.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp ./conf/spark-env.sh.template ./conf/spark-env.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑spark-env.sh,添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_DIST_CLASSPATH=$(/usr/local/hadoop/bin/hadoop classpath)</span><br><span class="line">export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop</span><br><span class="line">export SPARK_MASTER_IP=10.4.96.3</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>配置好后，将Master主机上的/usr/local/spark文件夹复制到各个节点上。在Master主机上执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/</span><br><span class="line">tar -zcf ~/spark.master.tar.gz ./spark</span><br><span class="line">cd ~</span><br><span class="line">scp ./spark.master.tar.gz slave01:/root</span><br><span class="line">scp ./spark.master.tar.gz slave02:/root</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在slave01,slave02节点上分别执行下面同样的操作：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -rf /usr/local/spark/</span><br><span class="line">sudo tar -zxf ~/spark.master.tar.gz -C /usr/local</span><br><span class="line">sudo chown -R root /usr/local/spark</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="1-4-启动Spark集群"><a href="#1-4-启动Spark集群" class="headerlink" title="1.4 启动Spark集群"></a>1.4 启动Spark集群</h2><ol>
+<li><p>启动Hadoop集群</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/hadoop/</span><br><span class="line">sbin/start-all.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动Master节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/spark/</span><br><span class="line">sbin/start-master.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动所有Slave节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sbin/start-slaves.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在浏览器上查看Spark独立集群管理器的集群信息</p>
+</li>
+<li>运行sparkPi</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-submit   --class   org.apache.spark.examples.SparkPi   --master   spark://10.4.96.3:7077   examples/jars/spark-examples_2.11-2.3.1.jar</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>进入spark-shell<br><code>./bin/spark-shell</code><br>试验发现，还是要安装scala的，否则无法进入spark。</li>
+</ol>
+<h1 id="2-scala安装"><a href="#2-scala安装" class="headerlink" title="2. scala安装"></a>2. scala安装</h1><p>scala应该只需要在主节点上安装，因为从节点都是运行一个jar包。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li><p>应该有适配的JDK版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:webupd8team/java</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install oracle-java8-installer</span><br><span class="line">echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections</span><br><span class="line">sudo update-java-alternatives -s java-8-oracle</span><br><span class="line">vim ~/.bashrc</span><br><span class="line">export JAVA_HOME=/usr/lib/jvm/java-8-oracle</span><br><span class="line">source ~/.bashrc  </span><br><span class="line">java -version</span><br><span class="line">javac -version</span><br><span class="line">$JAVA_HOME/bin/java -version</span><br><span class="line">ppa 的jdk路径是/usr/lib/jvm/</span><br><span class="line">在配置JDK的路径的时候，scala，hadoop，spark都不需要用到JDK的路径，但是scala依赖JDK，对JDK的版本有要求。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进行如下操作:解压，更新文件路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxf ~/下载/scala-2.11.12.tgz -C /usr/local   # 解压到/usr/local中</span><br><span class="line">cd /usr/local/</span><br><span class="line">sudo mv ./scala-2.11.12/ ./scala         # 将文件夹名改为scala</span><br><span class="line">sudo chown -R root ./scala</span><br><span class="line">vim ~/.bashrc</span><br><span class="line">export PATH=$PATH:/usr/local/scala/bin</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/13/deploy-Spark-on-cluster/" data-id="cjjk5cv6m000c10w686qz19yy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/集群维护/">集群维护</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/07/12/Use-Docker-to-deploy-Hadoop-on-Cluster-Cloud/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Use Docker to deploy Hadoop on Cluster/Cloud</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Spark使用指南/">Spark使用指南</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark原理/">spark原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark实践/">spark实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集群维护/">集群维护</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/07/13/deploy-Spark-on-cluster/">deploy Spark on cluster/cloud</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/12/Use-Docker-to-deploy-Hadoop-on-Cluster-Cloud/">Use Docker to deploy Hadoop on Cluster/Cloud</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/10/deploy-Hadoop-on-cluster/">deploy Hadoop on cluster/cloud</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/09/Introduction-of-Spark/">Introduction of Spark</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/函数式编程/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Xinyuan Chan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">tags</a>
+  
+    <a href="/about" class="mobile-nav-link">about</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
