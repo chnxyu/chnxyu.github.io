@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://yoursite.com/img/step%202.png">
 <meta property="og:image" content="http://yoursite.com/img/step%203.png">
 <meta property="og:image" content="http://yoursite.com/img/Hadoop云部署异常.png">
-<meta property="og:updated_time" content="2018-07-13T15:28:08.549Z">
+<meta property="og:updated_time" content="2018-07-13T15:46:27.830Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="deploy Hadoop on cluster&#x2F;cloud">
 <meta name="twitter:description" content="前言 云中部署服务器 hadoop2.7.6集群环境搭建 异常分析">
@@ -115,7 +115,7 @@
 </ol>
 <p>私有IP的配置比较tricky。这里简单列出几个关键步骤：<br><img src="/img/step 1.png" alt="step 1"><br><img src="/img/step 2.png" alt="step 2"><br><img src="/img/step 3.png" alt="step 3"><br>配置完内网地址之后，ping一下这些地址，看看时候能互相ping通。</p>
 <h1 id="2-Hadoop-2-7-6分布式集群环境搭建"><a href="#2-Hadoop-2-7-6分布式集群环境搭建" class="headerlink" title="2. Hadoop 2.7.6分布式集群环境搭建"></a>2. Hadoop 2.7.6分布式集群环境搭建</h1><p>Ref <a href="http://dblab.xmu.edu.cn/blog/install-hadoop-cluster/" target="_blank" rel="noopener">Hadoop集群安装配置教程</a></p>
-<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><p>在网上租用几台服务器。<a href="https://my.vultr.com/" target="_blank" rel="noopener">vultr</a>.<br>一个主节点，2个从节点。<br>三台电脑主机的用户名均为root.<br>三台机器可以ping双方的ip来测试三台电脑的连通性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">master: 10.4.96.3; root; !m8W.8bZfXRyCraS</span><br><span class="line">slave1: 10.4.96.4; root; _vE2Q]M(E._#1?F-</span><br><span class="line">slave2: 10.4.96.5; root; -Ds7eWY-$!DNz4N,</span><br></pre></td></tr></table></figure></p>
+<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><p>在网上租用几台服务器。<a href="https://my.vultr.com/" target="_blank" rel="noopener">vultr</a>.<br>一个主节点，2个从节点。<br>三台电脑主机的用户名均为root.<br>三台机器可以ping双方的ip来测试三台电脑的连通性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">master: 10.4.96.3; root; #!m8W.8bZfXRyCraS</span><br><span class="line">slave1: 10.4.96.4; root; #_vE2Q]M(E._#1?F-</span><br><span class="line">slave2: 10.4.96.5; root; #-Ds7eWY-$!DNz4N,</span><br></pre></td></tr></table></figure></p>
 <p>查看当前主机打IP.注意，此处不是必须IP地址都在同一个局域网中。<br><code>ifconfig</code><br>三台机器可以ping双方的ip来测试三台电脑的连通性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ping 66.42.65.91</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
 <p>为了更好的在Shell中区分三台主机，修改其显示的主机名，执行如下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hostname</span><br></pre></td></tr></table></figure></p>
 <p>修改三台机器的/etc/hosts文件,添加同样的配置：<br><code>sudo vim /etc/hosts</code></p>
@@ -148,7 +148,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/10/deploy-Hadoop-on-cluster/" data-id="cjjk5cv6j000b10w6d1rt0ltr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/10/deploy-Hadoop-on-cluster/" data-id="cjjk5nmc8000ov8w6oe8zpwae" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/集群维护/">集群维护</a></li></ul>
