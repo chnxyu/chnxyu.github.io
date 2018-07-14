@@ -5,22 +5,19 @@
   
 
   
-  <title>函数式编程 | Xinyuan&#39;s blog</title>
+  <title>Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。">
-<meta name="keywords" content="scala编程原理与实践,spark实践">
-<meta property="og:type" content="article">
-<meta property="og:title" content="函数式编程">
-<meta property="og:url" content="http://yoursite.com/2018/07/07/函数式编程/index.html">
+  <meta name="description" content="It is xinyuan&apos;s first blog">
+<meta name="keywords" content="Transportation Research">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Xinyuan&#39;s blog">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。">
+<meta property="og:description" content="It is xinyuan&apos;s first blog">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:image" content="http://yoursite.com/img/闭包的例子.png">
-<meta property="og:updated_time" content="2018-07-07T11:29:40.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="函数式编程">
-<meta name="twitter:description" content="函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。">
-<meta name="twitter:image" content="http://yoursite.com/img/闭包的例子.png">
+<meta name="twitter:title" content="Xinyuan&#39;s blog">
+<meta name="twitter:description" content="It is xinyuan&apos;s first blog">
   
   
     <link rel="icon" href="/favicon.png">
@@ -73,16 +70,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-函数式编程" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main">
+  
+    <article id="post-Hello0703" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/07/07/函数式编程/" class="article-date">
-  <time datetime="2018-07-07T09:52:45.000Z" itemprop="datePublished">2018-07-07</time>
+    <a href="/2018/07/02/Hello0703/" class="article-date">
+  <time datetime="2018-07-02T09:30:21.000Z" itemprop="datePublished">2018-07-02</time>
 </a>
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spark使用指南/">Spark使用指南</a>
-  </div>
-
   </div>
   <div class="article-inner">
     
@@ -90,8 +85,8 @@
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      函数式编程
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/02/Hello0703/">Hello World！</a>
     </h1>
   
 
@@ -99,54 +94,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014317848428125ae6aa24068b4c50a7e71501ab275d52000" target="_blank" rel="noopener">函数式编程就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。</a><br><a id="more"></a></p>
-<ol>
-<li>变量可以指向函数</li>
-<li>函数名也是变量</li>
-<li>传入函数(既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接收另一个函数作为参数，这种函数就称之为高阶函数。)<ol>
-<li>Map/Reudce</li>
-<li>fliter</li>
-<li>sorted</li>
-</ol>
-</li>
-<li>函数作为返回值(高阶函数除了可以接受函数作为参数外，还可以把函数作为结果值返回。)</li>
-<li>闭包<br><img src="/img/闭包的例子.png" alt="闭包的例子"><br>反映了一个没有具体值的变量到有具体值的变量的过程。</li>
-<li>匿名函数（当我们在传入函数时，有些时候，不需要显式地定义函数，直接传入匿名函数更方便。就是说不命名，直接写函数体。）<br>Lambda函数</li>
-</ol>
-
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>独立写博客的想法已经出现在几个月前了，兜兜转转，到现在才写成功。Blog之前已经搭建起来了，但是如何写文章还不知道。这里，参考了<a href="https://www.jianshu.com/p/2c9f0b3b2b0e" target="_blank" rel="noopener">简书-HEXO搭建个人博客(一)：发布第一篇文章</a>的教程。<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/02/Hello0703/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/07/函数式编程/" data-id="cjjksn3cq000p9gw6wcfwhr4s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjjksn3br00029gw620vqzkcs" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
-
     </footer>
   </div>
   
-    
-<nav id="article-nav">
-  
-    <a href="/2018/07/09/Introduction-of-Spark/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Introduction of Spark
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/07/07/RDD-and-DAG/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">RDD and DAG</div>
-    </a>
-  
-</nav>
+</article>
+
 
   
-</article>
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 </section>
         

@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="前言 云中部署Spark">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-13T15:39:20.733Z">
+<meta property="og:updated_time" content="2018-07-14T06:55:01.850Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="deploy Spark on cluster&#x2F;cloud">
 <meta name="twitter:description" content="前言 云中部署Spark">
@@ -165,11 +165,28 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxf ~/下载/scala-2.11.12.tgz -C /usr/local   # 解压到/usr/local中</span><br><span class="line">cd /usr/local/</span><br><span class="line">sudo mv ./scala-2.11.12/ ./scala         # 将文件夹名改为scala</span><br><span class="line">sudo chown -R root ./scala</span><br><span class="line">vim ~/.bashrc</span><br><span class="line">export PATH=$PATH:/usr/local/scala/bin</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+<h1 id="3-Run-Spark-Application-on-cluster-cloud"><a href="#3-Run-Spark-Application-on-cluster-cloud" class="headerlink" title="3. Run Spark Application on cluster/cloud"></a>3. Run Spark Application on cluster/cloud</h1><ol>
+<li><p>独立集群管理器</p>
+<ol>
+<li>在集群中运行应用程序JAR包<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://master:7077 /usr/local/spark/examples/jars/spark-examples_2.11-2.3.1.jar</span><br><span class="line">or</span><br><span class="line">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://10.4.96.3:7077 /usr/local/spark/examples/jars/spark-examples_2.11-2.3.1.jar</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>Hadoop YARN管理器</p>
+<ol>
+<li>在集群中运行应用程序JAR包<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn-cluster /usr/local/spark/examples/jars/spark-examples_2.11-2.3.1.jar</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<p>yarn运行后的结果要在web页面去查看。<br>修改yarn-site.xml配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/local/hadoop/etc/hadoop/yarn-site.xml</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;!-- Site specific YARN configuration properties --&gt;</span><br><span class="line">     &lt;property&gt;</span><br><span class="line">         &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">         &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">     &lt;/property&gt;</span><br><span class="line">     &lt;property&gt;</span><br><span class="line">         &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">         &lt;value&gt;master&lt;/value&gt;</span><br><span class="line"> &lt;/property&gt;</span><br><span class="line"> &lt;property&gt;</span><br><span class="line">  &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;0.0.0.0:8088&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br><span class="line">注意：&lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;的value是master不能改。添加  &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;0.0.0.0:8088&lt;/value&gt;</span><br><span class="line">重启resourcemanager and nodemanager</span><br><span class="line">/usr/local/hadoop/sbin/yarn-daemon.sh stop resourcemanager</span><br><span class="line">/usr/local/hadoop/sbin/yarn-daemon.sh start resourcemanager</span><br><span class="line">/usr/local/hadoop/sbin/yarn-daemon.sh stop nodemanager</span><br><span class="line">/usr/local/hadoop/sbin/yarn-daemon.sh start nodemanager</span><br></pre></td></tr></table></figure></p>
+<p>重启Hadoop和spark命令,重新提交sparkPi jar包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/spark/sbin/stop-all.sh</span><br><span class="line">/usr/local/hadoop/sbin/stop-all.sh</span><br><span class="line">/usr/local/hadoop/sbin/start-all.sh</span><br><span class="line">/usr/local/spark/sbin/start-all.sh</span><br></pre></td></tr></table></figure></p>
+<p>在SEU集群中，运行应用程序JAR包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/spark-2.3.0/</span><br><span class="line">./bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://master:7077 examples/jars/spark-examples_2.11-2.3.0.jar</span><br><span class="line">or</span><br><span class="line">/opt/spark-2.3.0/bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn-cluster /opt/spark-2.3.0examples/jars/spark-examples_2.11-2.3.0.jar</span><br><span class="line">报错。</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/13/deploy-Spark-on-cluster/" data-id="cjjk5nmc4000mv8w61275ypzk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/13/deploy-Spark-on-cluster/" data-id="cjjksn3co000m9gw6au303ql9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/集群维护/">集群维护</a></li></ul>
@@ -180,10 +197,19 @@
     
 <nav id="article-nav">
   
+    <a href="/2018/07/14/Tune-the-Apache-Spark-Jobs/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Tune the Apache Spark Jobs
+        
+      </div>
+    </a>
   
-    <a href="/2018/07/12/Use-Docker-to-deploy-Hadoop-on-Cluster-Cloud/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Use Docker to deploy Hadoop on Cluster/Cloud</div>
+      <div class="article-nav-title">Docker to deploy Hadoop on Cluster/Cloud</div>
     </a>
   
 </nav>
@@ -232,11 +258,15 @@
       <ul>
         
           <li>
+            <a href="/2018/07/14/Tune-the-Apache-Spark-Jobs/">Tune the Apache Spark Jobs</a>
+          </li>
+        
+          <li>
             <a href="/2018/07/13/deploy-Spark-on-cluster/">deploy Spark on cluster/cloud</a>
           </li>
         
           <li>
-            <a href="/2018/07/12/Use-Docker-to-deploy-Hadoop-on-Cluster-Cloud/">Use Docker to deploy Hadoop on Cluster/Cloud</a>
+            <a href="/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/">Docker to deploy Hadoop on Cluster/Cloud</a>
           </li>
         
           <li>
@@ -245,10 +275,6 @@
         
           <li>
             <a href="/2018/07/09/Introduction-of-Spark/">Introduction of Spark</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/07/函数式编程/">函数式编程</a>
           </li>
         
       </ul>
