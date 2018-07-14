@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="前言 云中部署Spark">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-14T06:55:01.850Z">
+<meta property="og:updated_time" content="2018-07-14T15:30:44.174Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="deploy Spark on cluster&#x2F;cloud">
 <meta name="twitter:description" content="前言 云中部署Spark">
@@ -116,7 +116,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/spark/</span><br><span class="line">cp ./conf/slaves.template ./conf/slaves</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>slaves文件设置Worker节点。编辑slaves内容,把默认内容localhost替换成如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">slave01</span><br><span class="line">slave02</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim ./conf/slave</span><br><span class="line">slave01</span><br><span class="line">slave02</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 </li>
@@ -126,7 +126,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp ./conf/spark-env.sh.template ./conf/spark-env.sh</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>编辑spark-env.sh,添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_DIST_CLASSPATH=$(/usr/local/hadoop/bin/hadoop classpath)</span><br><span class="line">export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop</span><br><span class="line">export SPARK_MASTER_IP=10.4.96.3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim ./conf/spark-env.sh</span><br><span class="line">export SPARK_DIST_CLASSPATH=$(/usr/local/hadoop/bin/hadoop classpath)</span><br><span class="line">export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop</span><br><span class="line">export SPARK_MASTER_IP=10.25.96.3</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 </li>
@@ -143,7 +143,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/hadoop/</span><br><span class="line">sbin/start-all.sh</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动Master节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/spark/</span><br><span class="line">sbin/start-master.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/spark/</span><br><span class="line">sbin/start-all.sh</span><br><span class="line">or</span><br><span class="line">sbin/start-master.sh</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动所有Slave节点</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sbin/start-slaves.sh</span><br></pre></td></tr></table></figure>
@@ -152,9 +152,10 @@
 </li>
 <li>运行sparkPi</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-submit   --class   org.apache.spark.examples.SparkPi   --master   spark://10.4.96.3:7077   examples/jars/spark-examples_2.11-2.3.1.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://10.25.96.3:7077 examples/jars/spark-examples_2.11-2.3.1.jar</span><br><span class="line">or</span><br><span class="line">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn-cluster /usr/local/spark/examples/jars/spark-examples_2.11-2.3.1.jar</span><br></pre></td></tr></table></figure>
 <ol start="6">
 <li>进入spark-shell<br><code>./bin/spark-shell</code><br>试验发现，还是要安装scala的，否则无法进入spark。</li>
+<li>保存hadoop and spark package for reuse</li>
 </ol>
 <h1 id="2-scala安装"><a href="#2-scala安装" class="headerlink" title="2. scala安装"></a>2. scala安装</h1><p>scala应该只需要在主节点上安装，因为从节点都是运行一个jar包。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz</span><br></pre></td></tr></table></figure></p>
 <ol>
@@ -168,7 +169,7 @@
 <h1 id="3-Run-Spark-Application-on-cluster-cloud"><a href="#3-Run-Spark-Application-on-cluster-cloud" class="headerlink" title="3. Run Spark Application on cluster/cloud"></a>3. Run Spark Application on cluster/cloud</h1><ol>
 <li><p>独立集群管理器</p>
 <ol>
-<li>在集群中运行应用程序JAR包<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://master:7077 /usr/local/spark/examples/jars/spark-examples_2.11-2.3.1.jar</span><br><span class="line">or</span><br><span class="line">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://10.4.96.3:7077 /usr/local/spark/examples/jars/spark-examples_2.11-2.3.1.jar</span><br></pre></td></tr></table></figure>
+<li>在集群中运行应用程序JAR包<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://master:7077 /usr/local/spark/examples/jars/spark-examples_2.11-2.3.1.jar</span><br><span class="line">or</span><br><span class="line">/usr/local/spark/bin/spark-submit --class org.apache.spark.examples.SparkPi --master yarn-cluster /usr/local/spark/examples/jars/spark-examples_2.11-2.3.1.jar</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 </li>
@@ -186,7 +187,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/13/deploy-Spark-on-cluster/" data-id="cjjksn3co000m9gw6au303ql9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/13/deploy-Spark-on-cluster/" data-id="cjjlhz9fh00116ow6qe18hz67" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/集群维护/">集群维护</a></li></ul>
