@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="高性能计算与云计算是什么关系？spark能否用于高性能计算？">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-10T15:17:58.568Z">
+<meta property="og:updated_time" content="2018-07-24T12:25:15.113Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Introduction of Spark">
 <meta name="twitter:description" content="高性能计算与云计算是什么关系？spark能否用于高性能计算？">
@@ -99,19 +99,19 @@
       
         <p>高性能计算与云计算是什么关系？spark能否用于高性能计算？<br><a id="more"></a></p>
 <ol>
-<li>根据《2017全国高性能学术年会》（2017年会）中的PPT-《2017+TOP100排行榜+vFinal》，可以清楚的知道云计算集群也是HPC的一部分，云计算是HPC应用系统的重要组成部分。</li>
-<li>Ni et al. (2017)，将商用的云计算集群，如（Amazon’s EC2）与专用HPC Cluster分开，但是没有进行直接的对比。既然是分开的，还是说明计算用途是不一样的。另外，Ni et al. (2017)对比了spark与MPI，MPI的性能确实更好。但是spark在用户友好度，容错等方面具有很大优势。虽然spark不是性能最好的软件工具，然是也完全可以算作是高性能计算平台，特别是针对大数据处理的。总的来说，spark在效率与robustness方面达到了一个较好平衡。<br>Ref: Ni, E.C., Ciocan, D.F., Henderson, S.G., Hunter, S.R., 2017. Efficient Ranking and Selection in Parallel Computing Environments. Operations Research 65(3), 821-836.</li>
+<li>根据《2017全国高性能学术年会》（2017年会）中的PPT-《2017+TOP100排行榜+vFinal》，可以知道云计算集群也是HPC的一部分，云计算是HPC应用系统的重要组成部分。</li>
+<li>Ni et al. (2017)，将商用的云计算集群，如（Amazon’s EC2）与专用HPC Cluster分开，但是没有进行直接的对比。另外，Ni et al. (2017)对比了spark与MPI，MPI的性能确实更好。但是spark在用户友好度，容错等方面具有很大优势。虽然spark不是性能最好的软件工具，然是也完全可以算作是高性能计算平台，特别是针对大数据处理的。总的来说，spark在效率与robustness方面达到了一个较好平衡。<br>Ref: Ni, E.C., Ciocan, D.F., Henderson, S.G., Hunter, S.R., 2017. Efficient Ranking and Selection in Parallel Computing Environments. Operations Research 65(3), 821-836.</li>
 </ol>
-<p>另外一个问题要提出，什么是HPC，HPC比的就是一个指标：PFLOTS。而且数据分析/机器学习2017年占据了56%的份额。除了CPU集群，现在的高性能集群更多的是异构集群，GPU集群，FPGA集群。但是根据2017年会中的《大数据与人工智能》异构集群很困难，GPU计算上有优势，但是CPU更加全面。这个毕竟是硬件方面的发展。另外，软件端也有竞争，spark是参与者之一（MPI, MR, Tensorflow）。spark如果光比较PFLOTS肯定是没有优势的，但是在云服务，大数据方面是有独特优势的。</p>
-<p>Spark是大数据处理，和云计算的重要参与者。我这里主要利用的是其内存计算技术。另外，可以在case study里面show的是云计算。<br>Spark的优势：（1）内存计算技术：为了使程序运行更快，Spark提供了内存计算，减少了迭代计算时的IO开销；（2）DGA技术。<br>要了解spark，首先需要了解scala。所以，我们在附件1中对scala进行介绍。总结一下特性：（1）多范式，函数式，并发性好。（2）运行在JAVA虚拟机上，完全兼容java。（3）语法简洁。<br>Spark与Hadoop对比：（1）hadoop表达能力有限，所有的编程工作都是并行的，而事实上很多任务是并串混合的。（2）磁盘的I/O开销大。基于磁盘的运算。每次Map都把结果写入磁盘。（3）延迟高，每个任务都没严格的切分成两个阶段，必须等所有的Map结束后，Reduce才能启动。所以，难以胜任多阶段的计算任务。<br>相比于Hadoop，spark：（1）继承MapReduce的计算模式；同时，提供了除Map和Reduce以外的更多操作功能；groupby，fliter，等。（2）基于内存的计算；（3）DAG的任务调度机制。<br>更详细的介绍看“Execution of Spark on Cluster” and “RDD and DAG”</p>
+<p>另外一个问题要提出，什么是HPC，HPC主要比较的是一个指标：PFLOTS。而且数据分析/机器学习2017年占据了56%的份额。除了CPU集群，现在的高性能集群更多的是异构集群，GPU集群，FPGA集群。spark如果光比较PFLOTS肯定是没有优势的，但是在云服务，大数据方面是有独特优势的。</p>
+<p>Spark是大数据处理，和云计算的重要参与者。我这里主要利用的是其内存计算技术。另外，可以在case study里面show的是云计算。<br>Spark的优势：（1）内存计算技术：为了使程序运行更快，Spark提供了内存计算，减少了迭代计算时的IO开销；（2）DGA技术。<br>要了解spark，首先需要了解scala。所以，我们在附件1中对scala进行介绍。总结一下特性：（1）多范式，函数式，并发性好。（2）运行在JAVA虚拟机上，完全兼容java。（3）语法简洁。<br>Spark与Hadoop对比：（1）hadoop表达能力有限，所有的编程工作都是并行的，而事实上很多任务是并串混合的。（2）磁盘的I/O开销大。基于磁盘的运算。每次Map都把结果写入磁盘。（3）延迟高，每个任务都没严格的切分成两个阶段，必须等所有的Map结束后，Reduce才能启动。所以，难以胜任多阶段的计算任务。<br>相比于Hadoop，spark：（1）继承MapReduce的计算模式；同时，提供了除Map和Reduce以外的更多操作功能；groupby，fliter，等。（2）基于内存的计算；（3）DAG的任务调度机制。</p>
 <p>scala是spark编程基础。</p>
 <ol>
 <li>编程范式。<ol>
-<li>说到scala，要提到编程范式，包括函数式与命令式。函数式编程范式对高并发系统可以获得很好的实时响应性，充分利用多核CPU并行处理能力。如果是命令式编程，对多核CPU不适应。命令式多线程之间有状态共享，很多个线程去访问同一个共享变量的时候，各个线程不能随便改，必须要保证这个共享变量的一致性。这个时候就需要锁机制来实现并发控制。线程只有拿到锁权限才能修改这个变量。锁机制解决了多个状态共享问题，但是降低的并发度。相反，函数式编程不需要在多个线程之间共享状态。因为它不修改变量，所以根本不存在”锁”线程的问题。Scala是多范式的编程语言。Java是单范式，是面向对象的命令式语言。Scala可以混合着使用，使用起来自由。Scala性能最好，不要做底层的变换。</li>
-<li>Scala是函数式语言，就是说函数也是一个值。函数的地位问题。</li>
+<li>要提到编程范式，包括函数式与命令式。函数式编程范式对高并发系统可以获得很好的实时响应性，充分利用多核CPU并行处理能力。如果是命令式编程，对多核CPU不适应。命令式多线程之间有状态共享，很多个线程去访问同一个共享变量的时候，各个线程不能随便改，必须要保证这个共享变量的一致性。这个时候就需要锁机制来实现并发控制。线程只有拿到锁权限才能修改这个变量。锁机制解决了多个状态共享问题，但是降低的并发度。相反，函数式编程不需要在多个线程之间共享状态。因为它不修改变量，所以根本不存在”锁”线程的问题。Scala是多范式的编程语言。Java是单范式，是面向对象的命令式语言。Scala可以混合着使用，使用起来自由。Scala性能最好，不要做底层的变换。</li>
+<li>Scala是函数式语言，就是说函数也是一个值。函数在scala语言中具有最高的地位。</li>
 </ol>
 </li>
-<li>Scala兼容Java程序，Hadoop用java开发，同时spark兼容hadoop。</li>
+<li>Scala兼容Java程序，Hadoop用java开发，Spark这是用 cala开发。</li>
 <li>Scala完全面向对象，每个变量与操作都是对象。如a+b, 中的+就是一个方法。</li>
 <li>Scala编程的时候需要启动scala解释器，这是一个交互式执行环境，你往里面输入一个命令，返回一个结果。</li>
 <li>语法特点<ol>
@@ -137,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/09/Introduction-of-Spark/" data-id="cjjzk3x8w0005y4w6monrx725" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/09/Introduction-of-Spark/" data-id="cjjzobces0007hgw6s4bm35cd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scala编程原理与实践/">scala编程原理与实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark原理/">spark原理</a></li></ul>
