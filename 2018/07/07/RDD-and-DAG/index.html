@@ -16,7 +16,7 @@
 <meta property="og:description" content="为什么要设计RDD">
 <meta property="og:locale" content="zh-cn">
 <meta property="og:image" content="http://yoursite.com/img/RDD执行过程（DAG）.png">
-<meta property="og:updated_time" content="2018-07-08T07:31:30.353Z">
+<meta property="og:updated_time" content="2018-07-16T01:36:01.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RDD and DAG">
 <meta name="twitter:description" content="为什么要设计RDD">
@@ -99,8 +99,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="为什么要设计RDD"><a href="#为什么要设计RDD" class="headerlink" title="为什么要设计RDD"></a>为什么要设计RDD</h1><a id="more"></a>
-<p>我们知道了基于内存的计算，避免反复的磁盘读写，大大提高了效率。但事实上spark更进一步，他对基于内存的数据提出更详细的描述和定义，就是RDD（Resilient Distributed Datasets）。RDD是内存计算的组件之一。</p>
+        <p>为什么要设计RDD<br><a id="more"></a><br>我们知道了基于内存的计算，避免反复的磁盘读写，大大提高了效率。但事实上spark更进一步，他对基于内存的数据提出更详细的描述和定义，就是RDD（Resilient Distributed Datasets）。RDD是内存计算的组件之一。</p>
 <ol>
 <li>RDD是屏蔽了分布式，看起来就像单机操作。这是RDD的优点。</li>
 <li>RDD是一个只读的，这样的好处是？也就是说RDD只能新建，不能修改。这也就催生了DAG。所以，这也就导致了RDD的转换是非常重要的。RDD提供了比HadoopMR更加丰富的操作符，这位DAG的创建打下了基础。<ol>
@@ -131,7 +130,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/07/RDD-and-DAG/" data-id="cjjm84arl000720w6brzpxh1f" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/07/RDD-and-DAG/" data-id="cjjzc3v5t000b20w6btjv7ggq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark原理/">spark原理</a></li></ul>

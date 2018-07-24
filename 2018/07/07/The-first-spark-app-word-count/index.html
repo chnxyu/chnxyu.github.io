@@ -7,18 +7,18 @@
   
   <title>The first spark app: word count | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言这里重点介绍怎么编写一个spark app。">
+  <meta name="description" content="这里重点介绍怎么编写一个spark app。">
 <meta name="keywords" content="spark实践">
 <meta property="og:type" content="article">
 <meta property="og:title" content="The first spark app: word count">
 <meta property="og:url" content="http://yoursite.com/2018/07/07/The-first-spark-app-word-count/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="前言这里重点介绍怎么编写一个spark app。">
+<meta property="og:description" content="这里重点介绍怎么编写一个spark app。">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-07T08:01:55.372Z">
+<meta property="og:updated_time" content="2018-07-16T01:36:14.498Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="The first spark app: word count">
-<meta name="twitter:description" content="前言这里重点介绍怎么编写一个spark app。">
+<meta name="twitter:description" content="这里重点介绍怎么编写一个spark app。">
   
   
     <link rel="icon" href="/favicon.png">
@@ -97,7 +97,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这里重点介绍怎么编写一个spark app。<br><a id="more"></a></p>
+        <p>这里重点介绍怎么编写一个spark app。<br><a id="more"></a></p>
 <h1 id="通过spark-shell编写"><a href="#通过spark-shell编写" class="headerlink" title="通过spark shell编写"></a>通过spark shell编写</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/spark</span><br><span class="line">./bin/spark-shell --master local</span><br><span class="line">val textFile=sc.textFile(&quot;file:////home/hadoop/Desktop/tem/1.txt&quot;)</span><br><span class="line">val wordCount=textFile.flatMap(line=&gt;line.split(&quot; &quot;)).map(word=&gt;(word,1))reduceByKey((a,b)=&gt;a+b)</span><br><span class="line">wordCount.collect()</span><br><span class="line">wordCount.foreach(println)</span><br></pre></td></tr></table></figure>
 <h1 id="独立编写"><a href="#独立编写" class="headerlink" title="独立编写"></a>独立编写</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/* SimpleApp.scala */</span><br><span class="line">import org.apache.spark.SparkContext</span><br><span class="line">import org.apache.spark.SparkContext._</span><br><span class="line">import org.apache.spark.SparkConf</span><br><span class="line"></span><br><span class="line">object SimpleApp &#123;</span><br><span class="line">    def main(args: Array[String]) &#123;</span><br><span class="line">        val logFile = &quot;file:///usr/local/spark/README.md&quot; // Should be some file on your system</span><br><span class="line">        val conf = new SparkConf().setAppName(&quot;Simple Application&quot;)</span><br><span class="line">        val sc = new SparkContext(conf)</span><br><span class="line">        val logData = sc.textFile(logFile, 2).cache()</span><br><span class="line">        val numAs = logData.filter(line =&gt; line.contains(&quot;a&quot;)).count()</span><br><span class="line">        val numBs = logData.filter(line =&gt; line.contains(&quot;b&quot;)).count()</span><br><span class="line">        println(&quot;Lines with a: %s, Lines with b: %s&quot;.format(numAs, numBs))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="使用intelij编写spark-app"><a href="#使用intelij编写spark-app" class="headerlink" title="使用intelij编写spark app"></a>使用intelij编写spark app</h1><p>这里参考：<a href="http://dblab.xmu.edu.cn/blog/1492-2/" target="_blank" rel="noopener">使用Intellij Idea编写Spark应用程序（Scala+SBT）</a></p>
@@ -105,7 +105,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/07/The-first-spark-app-word-count/" data-id="cjjm84arl000c20w6vbfi10h3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/07/The-first-spark-app-word-count/" data-id="cjjzc3v5q000a20w6mxfvs5k5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
