@@ -7,19 +7,19 @@
   
   <title>Spark的安装与使用方法 | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。">
+  <meta name="description" content="Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术提高了Map-Reduce编程模型的计算效率，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。">
 <meta name="keywords" content="spark实践">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark的安装与使用方法">
 <meta property="og:url" content="http://yoursite.com/2018/07/03/Spark的安装与使用方法/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。">
+<meta property="og:description" content="Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术提高了Map-Reduce编程模型的计算效率，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。">
 <meta property="og:locale" content="zh-cn">
 <meta property="og:image" content="http://yoursite.com/img/SampleSparkApp-WordCount.png">
-<meta property="og:updated_time" content="2018-07-16T01:36:30.344Z">
+<meta property="og:updated_time" content="2018-07-24T12:43:42.191Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark的安装与使用方法">
-<meta name="twitter:description" content="Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。">
+<meta name="twitter:description" content="Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术提高了Map-Reduce编程模型的计算效率，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。">
 <meta name="twitter:image" content="http://yoursite.com/img/SampleSparkApp-WordCount.png">
   
   
@@ -99,10 +99,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术大大提高了Map-Reduce编程模型的计算效能，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。<br><a id="more"></a><br>目前的高性能计算主要采用三种框架：(1)面向科学计算的MPI；（2）面向大数据处理的Spark；（3）面向AI的TensorFlow；</p>
+        <p>Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术提高了Map-Reduce编程模型的计算效率，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。<br><a id="more"></a></p>
 <h1 id="本节概述"><a href="#本节概述" class="headerlink" title="本节概述"></a>本节概述</h1><p>Spark来源于伯克利大学的实验室。主要创新点是内存计算和DAG。<br>这篇文章的主要目的是介绍如何独立的编写Spark应用程序。Spark的优点是我在单机上跑成功的应用程序，在集群上也能成功，这是MPI不具备的，这个特点大大提高了编程效率。所以，编写Spark应用程序的步骤就可以分解为：（1）在单机上编写测试一个Spark应用程序；（2）然后在拿到集群上去运行。</p>
-<h1 id="1-Spark-安装"><a href="#1-Spark-安装" class="headerlink" title="1. Spark 安装"></a>1. Spark 安装</h1><!-- Spark 如何在集群上安装？ -->
-<!-- /usr/local/Intellij/bin/idea.sh -->
+<h1 id="1-Spark-安装"><a href="#1-Spark-安装" class="headerlink" title="1. Spark 安装"></a>1. Spark 安装</h1><p>spark 在集群上部署：<a href="https://chnxyu.github.io/2018/07/13/deploy-Spark-on-cluster/" target="_blank" rel="noopener">deploy Spark on cluster/cloud</a></p>
 <h1 id="2-使用Spark-shell"><a href="#2-使用Spark-shell" class="headerlink" title="2. 使用Spark shell"></a>2. 使用Spark shell</h1><p>spark shell是一种交互式界面，可以逐行交互式的运行语句。便于学习Spark API。</p>
 <p>Spark shell启动之后实际上已经开启了一个deriver program，或者说本身就是一个driver program（任务控制节点）。任何一个Application必须有一个driver program，伴随Application运行的全过程，driver program开启在这个application提交的节点上，一般是管理节点。</p>
 <p>driver program再通过spark context对象与集群的硬件资源连接。driver内部有main函数和分布式数据集。</p>
@@ -116,12 +115,12 @@
 <h2 id="3-4进行具体的打包编译"><a href="#3-4进行具体的打包编译" class="headerlink" title="3.4进行具体的打包编译"></a>3.4进行具体的打包编译</h2><p><code>/usr/local/sbt/sbt package</code><br>打包编译之后，会自动生成一个target目录，生成的jar包会保存在target目录下面。</p>
 <h2 id="3-5向spark提交jar包"><a href="#3-5向spark提交jar包" class="headerlink" title="3.5向spark提交jar包"></a>3.5向spark提交jar包</h2><p><code>spark-submit （里面又一系列参数进行配置）</code></p>
 <h1 id="4-Spark集群环境搭建及在集群上运行sparkApp"><a href="#4-Spark集群环境搭建及在集群上运行sparkApp" class="headerlink" title="4. Spark集群环境搭建及在集群上运行sparkApp"></a>4. Spark集群环境搭建及在集群上运行sparkApp</h1><h2 id="4-1-集群环境搭建"><a href="#4-1-集群环境搭建" class="headerlink" title="4.1 集群环境搭建"></a>4.1 集群环境搭建</h2><p>1 主从架构，如：一主2从<br>2 HDFS有一个name node，和data node；<br>3 Spark有master node，和worker node；<br>4 部署时master node和name node部署在一起，data node和worker node部署在一起，这样可以方便数据靠拢的原则。HDFS完成数据存储，Spark core完成数据计算。</p>
-<h2 id="4-2-在集群上运行sparkApp"><a href="#4-2-在集群上运行sparkApp" class="headerlink" title="4.2 在集群上运行sparkApp"></a>4.2 在集群上运行sparkApp</h2><p>先启动hdfs，yarn，再启动spark<br>选择cluster manager<br>准备好jar包及其地址<br>开始向集群提交。<br>知道URL（地址）<br>spark://master:7077<br>通过web界面查看运行情况<br>如果是选择yarn</p>
+<h2 id="4-2-在集群上运行sparkApp"><a href="#4-2-在集群上运行sparkApp" class="headerlink" title="4.2 在集群上运行sparkApp"></a>4.2 在集群上运行sparkApp</h2><p>先启动hdfs，yarn，再启动spark<br>选择cluster manager<br>准备好jar包及其地址<br>开始向集群提交。<br>知道URL（地址）<br>spark://master:7077<br>通过web界面查看运行情况</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/03/Spark的安装与使用方法/" data-id="cjjzopyzy000de4w64r757enr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/03/Spark的安装与使用方法/" data-id="cjjzoyuub000a0gw6eehjq9h7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark实践/">spark实践</a></li></ul>
