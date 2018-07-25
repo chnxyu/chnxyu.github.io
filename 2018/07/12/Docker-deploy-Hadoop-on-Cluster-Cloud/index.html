@@ -7,18 +7,18 @@
   
   <title>Docker to deploy Hadoop on Cluster/Cloud | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Docker">
+  <meta name="description" content="Docker 是一个轻量级的镜像，对于Hadoop，Spark在集群上的维护有比较重要的意义。">
 <meta name="keywords" content="cluster maintenance">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker to deploy Hadoop on Cluster&#x2F;Cloud">
 <meta property="og:url" content="http://yoursite.com/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="Docker">
+<meta property="og:description" content="Docker 是一个轻量级的镜像，对于Hadoop，Spark在集群上的维护有比较重要的意义。">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-25T10:31:01.151Z">
+<meta property="og:updated_time" content="2018-07-25T11:59:49.772Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker to deploy Hadoop on Cluster&#x2F;Cloud">
-<meta name="twitter:description" content="Docker">
+<meta name="twitter:description" content="Docker 是一个轻量级的镜像，对于Hadoop，Spark在集群上的维护有比较重要的意义。">
   
   
     <link rel="icon" href="/favicon.png">
@@ -97,8 +97,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Docker<br><a id="more"></a></p>
-<h1 id="1-Ubuntu-安装-Docker"><a href="#1-Ubuntu-安装-Docker" class="headerlink" title="1. Ubuntu 安装 Docker"></a>1. Ubuntu 安装 Docker</h1><p>1.1 ubuntu查看系统位数，版本号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">uname -a</span><br><span class="line">or</span><br><span class="line">lsb_release -a</span><br><span class="line">or</span><br><span class="line">cat /proc/version</span><br></pre></td></tr></table></figure></p>
+        <p>Docker 是一个轻量级的镜像，对于Hadoop，Spark在集群上的维护有比较重要的意义。<br><a id="more"></a></p>
+<h1 id="Docker-相当于一个轻量级的虚拟机。"><a href="#Docker-相当于一个轻量级的虚拟机。" class="headerlink" title="Docker 相当于一个轻量级的虚拟机。"></a>Docker 相当于一个轻量级的虚拟机。</h1><p>Docker是一个开源的引擎，可以轻松的为任何应用创建一个轻量级的、可移植的、自给自足的容器。开发者在笔记本上编译测试通过的容器可以批量地在生产环境中部署，包括VMs（虚拟机）、bare metal、OpenStack 集群和其他的基础应用平台。Docker能够自动执行重复性任务，例如搭建和配置开发环境，从而解放了开发人员以便他们专注在真正重要的事情上：构建杰出的软件。<br>Docker包括三个基本概念: image, container, and repository.</p>
+<ul>
+<li>镜像（Image）是一个特殊的文件系统<br>操作系统分为内核和用户空间。对于Linux而言，内核启动后，会挂载root文件系统为其提供用户空间支持。而Docker镜像（Image），就相当于是一个root文件系统。</li>
+<li>容器（Container）是image的实例化<br>容器可以被创建、启动、停止、删除、暂停等 。<br>容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的命名空间。</li>
+<li>仓库（Repository）是集中存放image的地方</li>
+</ul>
+<p>Ref:<br><a href="https://www.itcodemonkey.com/article/5266.html" target="_blank" rel="noopener">可能是把Docker的概念讲的最清楚的一篇文章</a><br><a href="https://blog.csphere.cn/archives/22" target="_blank" rel="noopener">一小时Docker教程</a><br><a href="http://www.docker.org.cn/book/docker/what-is-docker-16.html" target="_blank" rel="noopener">什么是Docker?</a></p>
+<p>容器的操作逻辑是用户可以在容器中进行各种操作。然后保存对容器的修改，就可以得到一个新的镜像。然后部署到其他地方也可以快速部署，并且是隔离的。<br>Ref:<br><a href="http://www.docker.org.cn/book/docker/what-is-docker-16.html" target="_blank" rel="noopener">Docker入门教程 </a></p>
+<p>安装Docker<br>使用镜像：获取，列出，删除等<br>操作容器：启动，进入<br>访问仓库<br>数据管理<br>Ref:<br><a href="https://docker_practice.gitee.io/introduction/what.html" target="_blank" rel="noopener">Docker技术入门与实战</a></p>
+<h1 id="1-安装-Docker"><a href="#1-安装-Docker" class="headerlink" title="1. 安装 Docker"></a>1. 安装 Docker</h1><p>1.1 ubuntu查看系统位数，版本号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">uname -a</span><br><span class="line">or</span><br><span class="line">lsb_release -a</span><br><span class="line">or</span><br><span class="line">cat /proc/version</span><br></pre></td></tr></table></figure></p>
 <p>1.2. 卸载旧版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove docker \</span><br><span class="line">docker-engine \</span><br><span class="line">docker.io</span><br></pre></td></tr></table></figure></p>
 <p>1.3. install Docker<br>1.3.1. 使用 APT 安装<br>由于 apt 源使用 HTTPS 以确保软件下载过程中不被篡改。因此，我们首先需要添加使用HTTPS 传输的软件包以及 CA 证书。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install \</span><br><span class="line">apt-transport-https \</span><br><span class="line">ca-certificates \</span><br><span class="line">curl \</span><br><span class="line">software-properties-common</span><br><span class="line"># 为了确认所下载软件包的合法性，需要添加软件源的 GPG 密钥。</span><br><span class="line">curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line"># 然后，向 source.list 中添加 Docker 软件源</span><br><span class="line">sudo add-apt-repository \</span><br><span class="line">    &quot;deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu \</span><br><span class="line">    $(lsb_release -cs) \</span><br><span class="line">    stable&quot;</span><br></pre></td></tr></table></figure></p>
 <p>1.3.2. 安装 Docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install docker-ce</span><br><span class="line"># 查看 Docker 版本</span><br><span class="line">docker --version</span><br><span class="line">or</span><br><span class="line">docker -v</span><br></pre></td></tr></table></figure></p>
@@ -113,7 +122,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/" data-id="cjk0zocrp00004sw6cd5a5dzz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/" data-id="cjk12ub620000asw6k8ri0ehq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cluster-maintenance/">cluster maintenance</a></li></ul>
