@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="spark调优主要包括：（1）编程技巧；（2）硬件资源配置；（3）并发度调试；（4）数据结构压缩；（5）选择正确的数据形式；">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-24T14:03:23.993Z">
+<meta property="og:updated_time" content="2018-07-27T07:42:08.517Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tune the Apache Spark Jobs">
 <meta name="twitter:description" content="spark调优主要包括：（1）编程技巧；（2）硬件资源配置；（3）并发度调试；（4）数据结构压缩；（5）选择正确的数据形式；">
@@ -99,16 +99,20 @@
       
         <p>spark调优主要包括：（1）编程技巧；（2）硬件资源配置；（3）并发度调试；（4）数据结构压缩；（5）选择正确的数据形式；</p>
 <a id="more"></a>
+<p>（1）编程技巧<br>spark中的RDD在进行转换（Transformation）的过程中会产生两种依赖类型：宽依赖和窄依赖。宽依赖会要求数据进行shuffle，非常影响性能，在绝大多数情况下要尽量避免。</p>
 <p>Ref</p>
 <ol>
 <li><a href="https://www.zybuluo.com/xiaop1987/note/76737" target="_blank" rel="noopener">Apache Spark Jobs 性能调优</a></li>
 <li><a href="http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-1/" target="_blank" rel="noopener">How-to: Tune Your Apache Spark Jobs (Part 1)</a></li>
+<li><a href="https://www.cnblogs.com/qingyunzong/p/8899715.html" target="_blank" rel="noopener">Spark学习之路 （三）Spark之RDD</a></li>
+<li><a href="https://blog.csdn.net/zhumr/article/details/52540994" target="_blank" rel="noopener">第37课：Spark中Shuffle详解及作业</a></li>
 </ol>
+<p>（2）硬件资源配置</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/14/Tune-the-Apache-Spark-Jobs/" data-id="cjk1vo1ug000jg0w6yd3fuygk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/14/Tune-the-Apache-Spark-Jobs/" data-id="cjk3oil030008uww66w1nnuqd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-practice/">spark practice</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-principle/">spark principle</a></li></ul>
