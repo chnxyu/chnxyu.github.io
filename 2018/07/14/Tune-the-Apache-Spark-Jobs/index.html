@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="spark调优主要包括：（1）编程技巧；（2）硬件资源配置；（3）并发度调试；（4）数据结构压缩；（5）选择正确的数据形式；">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-27T14:05:05.619Z">
+<meta property="og:updated_time" content="2018-07-27T14:10:42.246Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tune the Apache Spark Jobs">
 <meta name="twitter:description" content="spark调优主要包括：（1）编程技巧；（2）硬件资源配置；（3）并发度调试；（4）数据结构压缩；（5）选择正确的数据形式；">
@@ -127,11 +127,15 @@
 </ul>
 <p>如果这个stage不是第一个stage，也就是说这个stage是在承接父stage的RDD。那么stage边界上的RDD transformation带有重新分片的参数。比如：reduceByKey<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val rdd2 = rdd1.reduceByKey(_ + _, numPartitions = X)</span><br></pre></td></tr></table></figure></p>
 <p>X 应该取什么值？最直接的方法就是做实验。不停的将 partition 的个数从上次实验的 partition 个数乘以1.5，直到性能不再提升为止。</p>
+<p>Ref</p>
+<ol>
+<li><a href="http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/" target="_blank" rel="noopener">“How-to: Tune Your Apache Spark Jobs (Part 2)”</a></li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/14/Tune-the-Apache-Spark-Jobs/" data-id="cjk42737c000dakw6rg92cj5z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/14/Tune-the-Apache-Spark-Jobs/" data-id="cjk42c2o8000e08w6jo93nmn5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-practice/">spark practice</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-principle/">spark principle</a></li></ul>
