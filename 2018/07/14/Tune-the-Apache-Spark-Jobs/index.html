@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="spark调优主要包括：（1）编程技巧；（2）硬件资源配置；（3）并发度调试；（4）数据结构压缩；（5）选择正确的数据形式；">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-27T07:43:07.307Z">
+<meta property="og:updated_time" content="2018-07-27T08:12:02.801Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tune the Apache Spark Jobs">
 <meta name="twitter:description" content="spark调优主要包括：（1）编程技巧；（2）硬件资源配置；（3）并发度调试；（4）数据结构压缩；（5）选择正确的数据形式；">
@@ -107,11 +107,16 @@
 <li><a href="https://www.cnblogs.com/qingyunzong/p/8899715.html" target="_blank" rel="noopener">Spark学习之路 （三）Spark之RDD</a></li>
 <li><a href="https://blog.csdn.net/zhumr/article/details/52540994" target="_blank" rel="noopener">第37课：Spark中Shuffle详解及作业</a></li>
 </ol>
-<h2 id="2-硬件资源配置"><a href="#2-硬件资源配置" class="headerlink" title="2. 硬件资源配置"></a>2. 硬件资源配置</h2>
+<h2 id="2-硬件资源配置"><a href="#2-硬件资源配置" class="headerlink" title="2. 硬件资源配置"></a>2. 硬件资源配置</h2><p>Spark关心的资源主要是是 CPU 和 内存。<br>CPU 资源由 executor 和 core 两项参数控制。<br>core 配置项控制一个 executor 中task的并发数。<br>executor<br>  spark-submit 通过参数–num-executors 指定。<br>  或者<br>  spark-defaults.conf 配置文件/ SparkConf 对象中设置 spark.executor.instances 参数。<br>core<br>  spark-submit 通过参数 –executor-cores 指定。<br>  或者<br>  spark-defaults.conf 配置文件/ SparkConf 对象中设置 spark.executor.cores 参数。<br>memory<br>  spark-submit 通过参数 –executor-memory 指定。<br>  或者<br>  spark-defaults.conf 配置文件/ SparkConf 对象中设置 spark.executor.memory 参数。<br>Ref</p>
+<ol>
+<li><a href="https://www.zybuluo.com/xiaop1987/note/102894" target="_blank" rel="noopener">Apache Spark Jobs 性能调优（二）</a></li>
+<li><a href="http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/" target="_blank" rel="noopener">How-to: Tune Your Apache Spark Jobs (Part 2)</a></li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/14/Tune-the-Apache-Spark-Jobs/" data-id="cjk3omhzc000hdww65w3cqgto" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/14/Tune-the-Apache-Spark-Jobs/" data-id="cjk3pl95u000hscw6ca10wh3p" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-practice/">spark practice</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-principle/">spark principle</a></li></ul>
