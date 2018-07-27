@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="spark调优主要包括：（1）编程技巧；（2）硬件资源配置；（3）并发度调试；（4）数据结构压缩；（5）选择正确的数据形式；">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-07-27T08:17:04.139Z">
+<meta property="og:updated_time" content="2018-07-27T14:05:05.619Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tune the Apache Spark Jobs">
 <meta name="twitter:description" content="spark调优主要包括：（1）编程技巧；（2）硬件资源配置；（3）并发度调试；（4）数据结构压缩；（5）选择正确的数据形式；">
@@ -115,11 +115,23 @@
 <li><a href="https://www.zybuluo.com/xiaop1987/note/102894" target="_blank" rel="noopener">Apache Spark Jobs 性能调优（二）</a></li>
 <li><a href="http://blog.cloudera.com/blog/2015/03/how-to-tune-your-apache-spark-jobs-part-2/" target="_blank" rel="noopener">How-to: Tune Your Apache Spark Jobs (Part 2)</a></li>
 </ol>
+<h2 id="3-并行度调试"><a href="#3-并行度调试" class="headerlink" title="3. 并行度调试"></a>3. 并行度调试</h2><p>Spark 是一套数据并行处理的引擎。但是 Spark 没办法从所有的并行化方案中找出最优的那个。每个 Spark stage 中包含若干个 task，每个 task 串行地处理数据。在调试 Spark 的job时，task 的个数可能是决定程序性能的最重要的参数。task 的个数就是并发度。如果运行时 task 的个数比实际可用的 slot（cores/线程） 还少，那么程序解没法使用到所有的 CPU 资源。</p>
+<p>task的数量是怎么决定的呢？首先，stage的划分是依据RDD的窄依赖关系。一个stage中的task的数量（并行度）是由这个stage中的最后一个RDD的分片数量（task数量/并行度）决定的。在窄依赖中，子RDD的分片数量在大多数情况下与父RDD的分片数量一致。所以，这个stage的第一个RDD的并行度就比较关键。</p>
+<p>在一个Job开始的时候，第一个stage的第一个RDD往往是通过读取文件的方式生成的。这个时候可以指定第一个RDD的partition的数量。</p>
+<p>要想知道 partition 的个数，可以通过接口 rdd.partitions().size() 获得。</p>
+<p>那么如何增加你的 partition 的个数呢？如果你的问题 stage 是从 Hadoop 读取数据，你可以做以下的选项：</p>
+<ul>
+<li>使用 repartition 选项对第一个RDD重新划片，会引发 shuffle；</li>
+<li>配置 InputFormat 用户将文件分得更小；</li>
+<li>写入 HDFS 文件时使用更小的block。</li>
+</ul>
+<p>如果这个stage不是第一个stage，也就是说这个stage是在承接父stage的RDD。那么stage边界上的RDD transformation带有重新分片的参数。比如：reduceByKey<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val rdd2 = rdd1.reduceByKey(_ + _, numPartitions = X)</span><br></pre></td></tr></table></figure></p>
+<p>X 应该取什么值？最直接的方法就是做实验。不停的将 partition 的个数从上次实验的 partition 个数乘以1.5，直到性能不再提升为止。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/14/Tune-the-Apache-Spark-Jobs/" data-id="cjk3prg0g000ho8w6l3e4fzqz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/14/Tune-the-Apache-Spark-Jobs/" data-id="cjk42737c000dakw6rg92cj5z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-practice/">spark practice</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-principle/">spark principle</a></li></ul>
