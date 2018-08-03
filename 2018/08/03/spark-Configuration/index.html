@@ -7,18 +7,18 @@
   
   <title>spark Configuration | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="spark参数配置的方法。">
+  <meta name="description" content="spark参数配置有三种方法。">
 <meta name="keywords" content="cluster maintenance">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark Configuration">
 <meta property="og:url" content="http://yoursite.com/2018/08/03/spark-Configuration/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="spark参数配置的方法。">
+<meta property="og:description" content="spark参数配置有三种方法。">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-08-03T15:37:20.869Z">
+<meta property="og:updated_time" content="2018-08-03T15:45:37.386Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark Configuration">
-<meta name="twitter:description" content="spark参数配置的方法。">
+<meta name="twitter:description" content="spark参数配置有三种方法。">
   
   
     <link rel="icon" href="/favicon.png">
@@ -97,18 +97,19 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>spark参数配置的方法。<br><a id="more"></a><br>spark参数配置有三种方法：（1）通过spark conf配置；（2）在spark-submit中配置；（3）在spark配置文件中配置。</p>
+        <p>spark参数配置有三种方法。<br><a id="more"></a><br>（1）通过spark conf配置；（2）在spark-submit中配置；（3）在spark配置文件中配置。</p>
 <h1 id="1-通过spark-conf配置"><a href="#1-通过spark-conf配置" class="headerlink" title="1. 通过spark conf配置"></a>1. 通过spark conf配置</h1><p>  spark conf是在源程序中设置。spark conf通过一系列键值对来覆盖默认配置。使用时先实例化spark conf，再调用sc对象的set方法即可。<br>  比如：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val conf = new SparkConf()</span><br><span class="line">conf.set(&quot;spark.kryoserializer.buffer&quot;, &quot;5&quot;)</span><br></pre></td></tr></table></figure></p>
 <h1 id="2-在spark-submit中配置"><a href="#2-在spark-submit中配置" class="headerlink" title="2. 在spark-submit中配置"></a>2. 在spark-submit中配置</h1><p>  用户在使用spark-submit提交程序的时候，也可以配置spark参数。<br>  比如：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --conf &apos;spark.kryoserializer.buffer=4&apos;</span><br></pre></td></tr></table></figure></p>
 <h1 id="3-在spark配置文件中配置"><a href="#3-在spark配置文件中配置" class="headerlink" title="3. 在spark配置文件中配置"></a>3. 在spark配置文件中配置</h1><p>  默认的spark配置参数是设置在spark安装目录的conf文件夹下的spark-defaults.conf文件中。可以进入该文件，修改参数。<br>  比如：</p>
 <pre><code>spark.master                     spark://master:7077
 spark.eventLog.enabled           true
 </code></pre><h1 id="4-优先级"><a href="#4-优先级" class="headerlink" title="4. 优先级"></a>4. 优先级</h1><p>  这三种方法有优先级。1. 通过spark conf配置 &gt; 2. 在spark-submit中配置 &gt; 3. 在spark配置文件中配置.<br>  具体程序的配置项可以通过spark的webUI查看。</p>
+<p>Ref<br><a href="https://spark.apache.org/docs/latest/configuration.html" target="_blank" rel="noopener">Spark Configuration</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/03/spark-Configuration/" data-id="cjke5n090000qk8w69olv31nl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/03/spark-Configuration/" data-id="cjke65fou000qfkw66fowbwi0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cluster-maintenance/">cluster maintenance</a></li></ul>
