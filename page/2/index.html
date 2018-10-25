@@ -72,6 +72,53 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Execution-of-Spark-at-cluster" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/06/Execution-of-Spark-at-cluster/" class="article-date">
+  <time datetime="2018-07-06T01:46:19.000Z" itemprop="datePublished">2018-07-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/06/Execution-of-Spark-at-cluster/">Execution of Spark at cluster</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Spark处理并行问题的逻辑比较简单，将一个大的数据集拆分成若干小的数据集，将各个小的数据集，然后对这些小的数据集用相同的程序来处理，得到结果之后再重新聚集到一起。Spark是在MapReudce编程模型下，加入了“内存计算”和“DAG”拥有较高运算效率的。这篇文章，对Spark整个运行流程进行一个介绍。<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/06/Execution-of-Spark-at-cluster/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/06/Execution-of-Spark-at-cluster/" data-id="cjnok6uf50005o4w684nzlq1k" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-principle/">spark principle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Spark的安装与使用方法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/03/Spark的安装与使用方法/" class="article-date">
@@ -107,7 +154,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/03/Spark的安装与使用方法/" data-id="cjke6ep54000c4ow6adxht1n5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/03/Spark的安装与使用方法/" data-id="cjnok6uf50007o4w6eqligtqu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cluster-maintenance/">cluster maintenance</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-practice/">spark practice</a></li></ul>
@@ -150,7 +197,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjke6ep4w00064ow6mj428405" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/Hello0703/" data-id="cjnok6uf50006o4w6amnfyj15" class="article-share-link">Share</a>
       
       
     </footer>
@@ -185,7 +232,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster-maintenance/">cluster maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala-principle-and-practice/">scala principle and practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-practice/">spark practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-principle/">spark principle</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster-maintenance/">cluster maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala-principle-and-practice/">scala principle and practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-maintenance/">spark maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-practice/">spark practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-principle/">spark principle</a></li></ul>
     </div>
   </div>
 
@@ -195,7 +242,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li></ul>
     </div>
   </div>
 
@@ -206,6 +253,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/10/25/pssh/">pssh</a>
+          </li>
         
           <li>
             <a href="/2018/08/03/spark-Configuration/">spark Configuration</a>
@@ -221,10 +272,6 @@
         
           <li>
             <a href="/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/">use Docker to deploy Hadoop on a cluster/cloud</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/10/deploy-Hadoop-on-cluster/">deploy Hadoop on a cluster/cloud</a>
           </li>
         
       </ul>

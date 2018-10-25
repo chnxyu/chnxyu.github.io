@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="Docker 是一个轻量级的镜像，对于Hadoop，Spark在集群上的维护有比较重要的意义。">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2018-08-03T15:20:40.513Z">
+<meta property="og:updated_time" content="2018-08-15T03:14:15.022Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="use Docker to deploy Hadoop on a cluster&#x2F;cloud">
 <meta name="twitter:description" content="Docker 是一个轻量级的镜像，对于Hadoop，Spark在集群上的维护有比较重要的意义。">
@@ -100,8 +100,8 @@
         <p>Docker 是一个轻量级的镜像，对于Hadoop，Spark在集群上的维护有比较重要的意义。<br><a id="more"></a></p>
 <h1 id="Docker-相当于一个轻量级的虚拟机。"><a href="#Docker-相当于一个轻量级的虚拟机。" class="headerlink" title="Docker 相当于一个轻量级的虚拟机。"></a>Docker 相当于一个轻量级的虚拟机。</h1><p>Docker是一个开源的引擎，可以轻松的为任何应用创建一个轻量级的、可移植的、自给自足的容器。开发者在笔记本上编译测试通过的容器可以批量地在生产环境中部署，包括VMs（虚拟机）、bare metal、OpenStack 集群和其他的基础应用平台。Docker能够自动执行重复性任务，例如搭建和配置开发环境，从而解放了开发人员以便他们专注在真正重要的事情上：构建杰出的软件。<br>Docker包括三个基本概念: image, container, and repository.</p>
 <ul>
-<li>镜像（Image）是一个特殊的文件系统<br>操作系统分为内核和用户空间。对于Linux而言，内核启动后，会挂载root文件系统为其提供用户空间支持。而Docker镜像（Image），就相当于是一个root文件系统。</li>
-<li>容器（Container）是image的实例化<br>容器可以被创建、启动、停止、删除、暂停等 。<br>容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的命名空间。</li>
+<li>镜像（Image）是一个特殊的文件系统<br>操作系统分为内核和用户空间。对于Linux而言，内核启动后，会挂载root文件系统为其提供用户空间支持。而Docker镜像（Image），就相当于是一个root文件系统。<br>Docker 镜像是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。</li>
+<li>容器（Container）是image的实例化<br>容器可以被创建、启动、停止、删除、暂停等 。<br>容器的实质是宿主上的特殊进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的命名空间。<br>容器内的进程是运行在一个隔离的环境里，使用起来，就好像是在一个独立于宿主的系统下操作一样。这种特性使得容器封装的应用比直接在宿主运行更加安全。也因为这种隔离的特性，初学时常常会混淆容器和虚拟机。<br>容器具有一个临时的存储层，容器注销（进程终止），存储层也注销，其中的存储信息也消失。<br>想要存储的信息，最好跳过容器的存储层，直接对宿主发生读写。</li>
 <li>仓库（Repository）是集中存放image的地方</li>
 </ul>
 <p>Ref:<br><a href="https://www.itcodemonkey.com/article/5266.html" target="_blank" rel="noopener">可能是把Docker的概念讲的最清楚的一篇文章</a><br><a href="https://blog.csphere.cn/archives/22" target="_blank" rel="noopener">一小时Docker教程</a><br><a href="http://www.docker.org.cn/book/docker/what-is-docker-16.html" target="_blank" rel="noopener">什么是Docker?</a></p>
@@ -115,15 +115,17 @@
 <p>1.5. 建立 docker 用户组, 将当前用户加入 docker 组：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure></p>
 <p>退出当前终端并重新登录，进行如下测试。<br>1.6. 测试 Docker 是否安装正确<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br><span class="line">输出如下信息</span><br><span class="line">Unable to find image &apos;hello-world:latest&apos; locally</span><br><span class="line">latest: Pulling from library/hello-world</span><br><span class="line">9db2ca6ccae0: Pull complete</span><br><span class="line">Digest: sha256:4b8ff392a12ed9ea17784bd3c9a8b1fa3299cac44aca35a85c90c5e3c7afacdc</span><br><span class="line">Status: Downloaded newer image for hello-world:latest</span><br><span class="line">Hello from Docker!</span><br><span class="line">......</span><br></pre></td></tr></table></figure></p>
 <h1 id="2-下载、使用-Docker-镜像"><a href="#2-下载、使用-Docker-镜像" class="headerlink" title="2. 下载、使用 Docker 镜像"></a>2. 下载、使用 Docker 镜像</h1><p>镜像是 Docker 的三大组件之一。</p>
-<h2 id="2-1-下载镜像"><a href="#2-1-下载镜像" class="headerlink" title="2.1 下载镜像"></a>2.1 下载镜像</h2><p>Docker 运行容器前需要本地存在对应的镜像，如果本地不存在该镜像，Docker 会从镜像仓库下载该镜像。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]</span><br><span class="line">docker pull --help</span><br><span class="line">docker pull ubuntu:16.04</span><br></pre></td></tr></table></figure></p>
-<h2 id="2-2-启动"><a href="#2-2-启动" class="headerlink" title="2.2 启动"></a>2.2 启动</h2><p>启动就是实例化一个镜像，生成一个容器。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm \</span><br><span class="line">ubuntu:16.04 \</span><br><span class="line">bash</span><br></pre></td></tr></table></figure></p>
-<h2 id="2-3-列出image"><a href="#2-3-列出image" class="headerlink" title="2.3 列出image"></a>2.3 列出image</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
-<pre><code>
-</code></pre>
+<h2 id="2-1-下载镜像"><a href="#2-1-下载镜像" class="headerlink" title="2.1 下载镜像"></a>2.1 下载镜像</h2><p>Docker 运行容器前需要本地存在对应的镜像，如果本地不存在该镜像，Docker 会从镜像仓库下载该镜像。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]</span><br><span class="line">docker pull --help</span><br><span class="line">docker pull ubuntu:16.04</span><br><span class="line">#将会获取官方镜像 library/ubuntu 仓库中标签为 16.04 的镜像。</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-2-启动"><a href="#2-2-启动" class="headerlink" title="2.2 启动"></a>2.2 启动</h2><p>启动就是实例化一个镜像，生成一个容器。有了镜像后，我们就能够以这个镜像为基础启动并运行一个容器。以上面的 ubuntu:16.04 为例，如果我们打算启动里面的 bash 并且进行交互式操作的话，可以执行下面的命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm \</span><br><span class="line">ubuntu:16.04 \</span><br><span class="line">bash</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-3-列出image"><a href="#2-3-列出image" class="headerlink" title="2.3 列出image"></a>2.3 列出image</h2><p>要想列出已经下载下来的镜像，可以使用 docker image ls 命令。<br>列表包含了 仓库名 、 标签 、 镜像 ID 、 创建时间 以及 所占用的空间 。<br>镜像 ID 则是镜像的唯一标识，一个镜像可以对应多个标签。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-4-删除本地镜像"><a href="#2-4-删除本地镜像" class="headerlink" title="2.4 删除本地镜像"></a>2.4 删除本地镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image rm [选项] &lt;镜像1&gt; [&lt;镜像2&gt; ...]</span><br></pre></td></tr></table></figure>
+<h2 id="2-5-利用-commit-理解镜像构成"><a href="#2-5-利用-commit-理解镜像构成" class="headerlink" title="2.5 利用 commit 理解镜像构成"></a>2.5 利用 commit 理解镜像构成</h2><p>docker commit是用于一些特殊场合，比如比如被入侵后保存现场等。不要用来定制镜像。<br>镜像是容器的基础，每次执行 docker run 的时候都会指定哪个镜像作为容器运行的基础。在之前的例子中，我们所使用的都是来自于 Docker Hub 的镜像。直接使用这些镜像是可以满足一定的需求，而当这些镜像无法直接满足需求时，我们就需要定制这些镜像。接下来的几节就将讲解如何定制镜像。<br>当我们运行一个容器的时候（如果不使用卷的话），我们做的任何文件修改都会被记录于容器存储层里。而 Docker 提供了一个 docker commit 命令，可以将容器的存储层保存下来成为镜像。换句话说，就是在原有镜像的基础上，再叠加上容器的存储层，并构成新的镜像。以后我们运行这个新镜像的时候，就会拥有原有容器最后的文件变化。</p>
+<h2 id="2-6-使用-Dockerfile-定制镜像"><a href="#2-6-使用-Dockerfile-定制镜像" class="headerlink" title="2.6 使用 Dockerfile 定制镜像"></a>2.6 使用 Dockerfile 定制镜像</h2><h1 id="3-操作容器"><a href="#3-操作容器" class="headerlink" title="3 操作容器"></a>3 操作容器</h1><p>容器的操作可以大致分为：启动，守护，终止；进入，导入，导出；删除；</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/" data-id="cjke6ep4b00004ow64ntswac9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/" data-id="cjnok6uep0000o4w6pxmoo96x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cluster-maintenance/">cluster maintenance</a></li></ul>
@@ -172,7 +174,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster-maintenance/">cluster maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala-principle-and-practice/">scala principle and practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-practice/">spark practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-principle/">spark principle</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cluster-maintenance/">cluster maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala-principle-and-practice/">scala principle and practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-maintenance/">spark maintenance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-practice/">spark practice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark-principle/">spark principle</a></li></ul>
     </div>
   </div>
 
@@ -182,7 +184,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li></ul>
     </div>
   </div>
 
@@ -193,6 +195,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/10/25/pssh/">pssh</a>
+          </li>
         
           <li>
             <a href="/2018/08/03/spark-Configuration/">spark Configuration</a>
@@ -208,10 +214,6 @@
         
           <li>
             <a href="/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/">use Docker to deploy Hadoop on a cluster/cloud</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/10/deploy-Hadoop-on-cluster/">deploy Hadoop on a cluster/cloud</a>
           </li>
         
       </ul>
