@@ -11,16 +11,16 @@
 <meta name="keywords" content="cluster maintenance,spark practice">
 <meta property="og:type" content="article">
 <meta property="og:title" content="install and use Spark">
-<meta property="og:url" content="http://yoursite.com/2018/07/03/Spark的安装与使用方法/index.html">
+<meta property="og:url" content="https://chnxyu.github.io/2018/07/03/Spark的安装与使用方法/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
 <meta property="og:description" content="Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术提高了Map-Reduce编程模型的计算效率，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:image" content="http://yoursite.com/img/SampleSparkApp-WordCount.png">
+<meta property="og:image" content="https://chnxyu.github.io/img/SampleSparkApp-WordCount.png">
 <meta property="og:updated_time" content="2018-07-24T14:05:38.369Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="install and use Spark">
 <meta name="twitter:description" content="Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术提高了Map-Reduce编程模型的计算效率，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。">
-<meta name="twitter:image" content="http://yoursite.com/img/SampleSparkApp-WordCount.png">
+<meta name="twitter:image" content="https://chnxyu.github.io/img/SampleSparkApp-WordCount.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -43,7 +43,7 @@
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">Monash Ph.D. candidate</a>
+          <a href="/" id="subtitle">Monash Ph.D.</a>
         </h2>
       
     </div>
@@ -67,7 +67,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://chnxyu.github.io"></form>
       </div>
     </div>
   </div>
@@ -101,7 +101,7 @@
       
         <p>Spark是一种分布式处理技术，运行在CPU集群上。作为高性能计算的软件框架之一，Spark具有诸多优点，特别擅长于大数据处理。相较于Hadoop，Spark发明了（1）内存计算技术；（2）DAG。这两项技术提高了Map-Reduce编程模型的计算效率，适用于迭代运算。目前，spark已经成为了大数据处理的主流软件。<br><a id="more"></a></p>
 <h1 id="本节概述"><a href="#本节概述" class="headerlink" title="本节概述"></a>本节概述</h1><p>Spark来源于伯克利大学的实验室。主要创新点是内存计算和DAG。<br>这篇文章的主要目的是介绍如何独立的编写Spark应用程序。Spark的优点是我在单机上跑成功的应用程序，在集群上也能成功，这是MPI不具备的，这个特点大大提高了编程效率。所以，编写Spark应用程序的步骤就可以分解为：（1）在单机上编写测试一个Spark应用程序；（2）然后在拿到集群上去运行。</p>
-<h1 id="1-Spark-安装"><a href="#1-Spark-安装" class="headerlink" title="1. Spark 安装"></a>1. Spark 安装</h1><p>spark 在集群上部署：<a href="https://chnxyu.github.io/2018/07/13/deploy-Spark-on-cluster/" target="_blank" rel="noopener">deploy Spark on cluster/cloud</a></p>
+<h1 id="1-Spark-安装"><a href="#1-Spark-安装" class="headerlink" title="1. Spark 安装"></a>1. Spark 安装</h1><p>spark 在集群上部署：<a href="https://chnxyu.github.io/2018/07/13/deploy-Spark-on-cluster/">deploy Spark on cluster/cloud</a></p>
 <h1 id="2-使用Spark-shell"><a href="#2-使用Spark-shell" class="headerlink" title="2. 使用Spark shell"></a>2. 使用Spark shell</h1><p>spark shell是一种交互式界面，可以逐行交互式的运行语句。便于学习Spark API。</p>
 <p>Spark shell启动之后实际上已经开启了一个deriver program，或者说本身就是一个driver program（任务控制节点）。任何一个Application必须有一个driver program，伴随Application运行的全过程，driver program开启在这个application提交的节点上，一般是管理节点。</p>
 <p>driver program再通过spark context对象与集群的硬件资源连接。driver内部有main函数和分布式数据集。</p>
@@ -120,7 +120,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/03/Spark的安装与使用方法/" data-id="cjnokb8uh0008uow6afryorra" class="article-share-link">Share</a>
+      <a data-url="https://chnxyu.github.io/2018/07/03/Spark的安装与使用方法/" data-id="cjv7xctgq000gycw6hefmc547" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cluster-maintenance/">cluster maintenance</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark-practice/">spark practice</a></li></ul>
@@ -179,7 +179,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li></ul>
     </div>
   </div>
 
@@ -190,6 +190,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/05/03/Repost-Linux/">Repost-Linux</a>
+          </li>
         
           <li>
             <a href="/2018/10/25/pssh/">pssh</a>
@@ -207,10 +211,6 @@
             <a href="/2018/07/13/deploy-Spark-on-cluster/">deploy Spark on a cluster/cloud</a>
           </li>
         
-          <li>
-            <a href="/2018/07/12/Docker-deploy-Hadoop-on-Cluster-Cloud/">use Docker to deploy Hadoop on a cluster/cloud</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -225,7 +225,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018 Xinyuan Chan<br>
+      &copy; 2019 Xinyuan Chan<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
