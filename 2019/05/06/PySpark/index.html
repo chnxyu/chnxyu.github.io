@@ -5,19 +5,20 @@
   
 
   
-  <title>Archives: 2019/5 | Xinyuan&#39;s blog</title>
+  <title>PySpark | Xinyuan&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="It is xinyuan&apos;s first blog">
+  <meta name="description" content="Pyspark独立程序编程，不像scala，需要特定嵌套文件结构，也不需要sbt打包。PySpark是整合在spark安装包中，不需要单独安装。 在virtual machine上建立git仓库，关联远程仓库git statusgit initgit add .git commit -m “Learn PySpark”git remote add origin https://Xinyuan_J">
 <meta name="keywords" content="Transportation Research">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Xinyuan&#39;s blog">
-<meta property="og:url" content="https://chnxyu.github.io/archives/2019/05/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PySpark">
+<meta property="og:url" content="https://chnxyu.github.io/2019/05/06/PySpark/index.html">
 <meta property="og:site_name" content="Xinyuan&#39;s blog">
-<meta property="og:description" content="It is xinyuan&apos;s first blog">
+<meta property="og:description" content="Pyspark独立程序编程，不像scala，需要特定嵌套文件结构，也不需要sbt打包。PySpark是整合在spark安装包中，不需要单独安装。 在virtual machine上建立git仓库，关联远程仓库git statusgit initgit add .git commit -m “Learn PySpark”git remote add origin https://Xinyuan_J">
 <meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2019-05-07T11:53:00.483Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xinyuan&#39;s blog">
-<meta name="twitter:description" content="It is xinyuan&apos;s first blog">
+<meta name="twitter:title" content="PySpark">
+<meta name="twitter:description" content="Pyspark独立程序编程，不像scala，需要特定嵌套文件结构，也不需要sbt打包。PySpark是整合在spark安装包中，不需要单独安装。 在virtual machine上建立git仓库，关联远程仓库git statusgit initgit add .git commit -m “Learn PySpark”git remote add origin https://Xinyuan_J">
   
   
     <link rel="icon" href="/favicon.png">
@@ -70,78 +71,61 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/05/06/PySpark/" class="archive-article-date">
-  <time datetime="2019-05-06T09:18:45.000Z" itemprop="datePublished">5月 6</time>
+        <section id="main"><article id="post-PySpark" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/06/PySpark/" class="article-date">
+  <time datetime="2019-05-06T09:18:45.000Z" itemprop="datePublished">2019-05-06</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/06/PySpark/">PySpark</a>
+    <h1 class="article-title" itemprop="name">
+      PySpark
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/05/05/Repost/" class="archive-article-date">
-  <time datetime="2019-05-05T14:36:09.000Z" itemprop="datePublished">5月 5</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/05/Repost/">Repost</a>
-    </h1>
-  
+        <a id="more"></a>
+<p>Pyspark独立程序编程，不像scala，需要特定嵌套文件结构，也不需要sbt打包。<br>PySpark是整合在spark安装包中，不需要单独安装。</p>
+<p>在virtual machine上建立git仓库，关联远程仓库<br>git status<br>git init<br>git add .<br>git commit -m “Learn PySpark”<br>git remote add origin <a href="https://Xinyuan_John_Chen@bitbucket.org/MoocaChen/ob-ue_admm_decomposition-virtual.git" target="_blank" rel="noopener">https://Xinyuan_John_Chen@bitbucket.org/MoocaChen/ob-ue_admm_decomposition-virtual.git</a><br>git push origin master<br>git push -u origin master<br>git pull –rebase origin master</p>
+<ol>
+<li>RDD<br>RDD可以持久化，保持在内存中，第二次行动操作，不需要触发从头到尾的计算，只需要重复使用上面缓存中的rdd。<br>RDD分区的一个分区原则是使得分区的个数尽量等于集群中的CPU核心（core）数目。<br>键值对RDD。</li>
+<li><p>传递内置函数<br><a href="https://stackoverflow.com/questions/48304008/operation-inside-map-function-in-pyspark" target="_blank" rel="noopener">https://stackoverflow.com/questions/48304008/operation-inside-map-function-in-pyspark</a></p>
+</li>
+<li><p>开发工具Visual Studio Code （学校网络阻止下载）<br><a href="http://dblab.xmu.edu.cn/blog/1693-2/" target="_blank" rel="noopener">使用开发工具Visual Studio Code 编写Spark应用程序(Python版)</a><br><a href="https://blog.csdn.net/weixin_40528417/article/details/81141567" target="_blank" rel="noopener">vscode 配置 python3开发环境</a><br><a href="https://xin053.github.io/2016/06/11/VS%20Code%E6%90%AD%E5%BB%BAPython%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" target="_blank" rel="noopener">VS Code搭建Python开发环境</a><br><a href="https://www.jianshu.com/p/cbf500c22154" target="_blank" rel="noopener">使用VS Code开发Python</a><br><a href="https://code.visualstudio.com/docs/python/python-tutorial" target="_blank" rel="noopener">Getting Started with Python in VS Code</a></p>
+</li>
+</ol>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/05/03/Repost-Linux/" class="archive-article-date">
-  <time datetime="2019-05-03T10:03:43.000Z" itemprop="datePublished">5月 3</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/03/Repost-Linux/">Repost-Linux</a>
-    </h1>
-  
-
-    </header>
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://chnxyu.github.io/2019/05/06/PySpark/" data-id="cjvdqhvx90001d4w6hdpqt6tj" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/05/05/Repost/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Repost</div>
+    </a>
   
+</nav>
 
+  
+</article>
 
 </section>
         
